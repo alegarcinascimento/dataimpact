@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {traverse,lexicalSearch} from '../lib/graph.js';import {demo} from '../lib/data.js';
+test('vendas afetam cinco relatórios e preservam a cadeia de suprimentos',()=>{const r=traverse(demo,'rawSales');assert.deepEqual(demo.nodes.filter(n=>n.kind==='report'&&r.ids.includes(n.id)).map(n=>n.id).sort(),['audit','boardReport','forecast','marginReport','salesReport'].sort());assert(!r.ids.includes('deliveryReport'));assert.deepEqual(r.paths.boardReport,['rawSales','quality','cleanSales','join','revenue','closing','result','boardReport']);});
+test('fechamento depende do ERP, CRM e contabilidade',()=>{const r=traverse(demo,'boardReport','upstream');assert.deepEqual(demo.nodes.filter(n=>n.kind==='source'&&r.ids.includes(n.id)).map(n=>n.id).sort(),['crm','erp','ledger']);});
+test('fornecedores afetam apenas seu relatório',()=>{const r=traverse(demo,'rawVendor');assert.deepEqual(demo.nodes.filter(n=>n.kind==='report'&&r.ids.includes(n.id)).map(n=>n.id),['deliveryReport']);});
+test('ciclos não causam repetição nem travamento',()=>{const g={edges:[{source:'a',target:'b'},{source:'b',target:'a'}]};assert.deepEqual(traverse(g,'a').ids,['a','b']);});
+test('busca ignora acentos e não inventa resultados',()=>{assert.equal(lexicalSearch(demo.incidents,'lançamentos duplicados')[0].id,'INC-019');assert.equal(lexicalSearch(demo.incidents,'astronauta').length,0);});
+test('todos os relacionamentos e incidentes apontam para ativos existentes',()=>{const ids=new Set(demo.nodes.map(n=>n.id));assert.equal(ids.size,demo.nodes.length);for(const e of demo.edges){assert(ids.has(e.source));assert(ids.has(e.target));}for(const i of demo.incidents)assert(ids.has(i.asset));});
