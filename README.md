@@ -9,7 +9,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-233745" alt="Licença MIT"></a>
 </p>
 
-<p align="center"><strong>Uma aplicação de engenharia de dados que transforma relações de dependência em caminhos de investigação.</strong></p>
+<p align="center"><strong>Monitoramento de dados com investigação de impacto, evidências e histórico em grafos.</strong></p>
 
 <p align="center">
   <a href="#experimente">Experimente</a> ·
@@ -18,6 +18,14 @@
   <a href="docs/VALIDATION.md">Validação técnica</a> ·
   <a href="docs/INSTALLATION.md">Instalação e configuração</a>
 </p>
+
+## Proposta em uma frase
+
+**Detectar uma violação de qualidade, mostrar seus possíveis consumidores e recuperar ocorrências úteis para orientar a investigação.**
+
+O DataImpact é um protótipo independente de engenharia de dados com uma proposta de piloto: avaliar o que o contexto do grafo acrescenta à recuperação de incidentes e, em uma etapa experimental, à representação por Semantic IDs.
+
+[Leia a proposta executiva](PITCH.md) · [Plano de piloto técnico](docs/PILOT_PROPOSAL.md) · [Entenda as métricas](docs/METRICS.md)
 
 ## Demonstração em três passos
 
@@ -177,7 +185,7 @@ A solução não gera respostas com LLM e não implementa GraphRAG completo. Sim
 npm test
 ```
 
-A suíte contém **24 testes automatizados**, incluindo cenários, ciclos, validação de catálogo, coleta CSV, regras, protocolo PostgreSQL simulado, API com dados próprios histórico, quantização residual e interações da interface em DOM simulado. A [pipeline do GitHub Actions](https://github.com/alegarcinascimento/dataimpact/actions/workflows/ci.yml) apresenta o resultado de cada execução.
+A suíte contém **24 testes automatizados**, incluindo cenários, ciclos, validação de catálogo, coleta CSV, regras, protocolo PostgreSQL simulado, API com dados próprios, histórico, quantização residual e interações da interface em DOM simulado. A [pipeline do GitHub Actions](https://github.com/alegarcinascimento/dataimpact/actions/workflows/ci.yml) apresenta o resultado de cada execução.
 
 Há um experimento de recuperação sintético publicado; os resultados vetoriais e de Semantic IDs ainda dependem de execução com embeddings. Não há benchmark de desempenho em produção. A validação integrada de PostgreSQL, Neo4j e provedor de embeddings precisa ser executada na instância utilizada. Testes de DOM não comprovam o layout visual em navegador.
 
@@ -197,6 +205,9 @@ O escopo atual é um **MVP de portfólio com integração Neo4j implementada**, 
 
 | Leitura | O que você vai encontrar |
 | --- | --- |
+| [Proposta executiva](PITCH.md) | Problema, demonstração e solicitação de um piloto |
+| [Plano de piloto](docs/PILOT_PROPOSAL.md) | Hipóteses, protocolo e critérios de decisão |
+| [Métricas em linguagem simples](docs/METRICS.md) | Cobertura, ordenação e limites dos resultados |
 | [Conectar dados próprios](docs/DATA_SOURCES.md) | JSON, CSV, PostgreSQL, regras e rastreamento dos alertas |
 | [Arquitetura e modelo](docs/ARCHITECTURE.md) | Schema, contratos, modos, decisões e escalabilidade |
 | [Laboratório Cypher](docs/CYPHER.md) | Consultas de exploração, resultados esperados e cuidados |
@@ -213,4 +224,4 @@ O escopo atual é um **MVP de portfólio com integração Neo4j implementada**, 
 
 Desenvolvido no contexto de um portfólio de engenharia de dados, com apoio de IA na implementação e documentação. O repositório concentra código, decisões e testes para revisão e reprodução pela comunidade.
 
-[Licença MIT](LICENSE). Dados inteiramente fictícios. Projeto independente, sem vínculo ou endosso oficial da Neo4j.
+[Licença MIT](LICENSE). Dados inteiramente fictícios. Projeto independente, sem vínculo ou endosso do iFood, da Neo4j ou dos palestrantes citados.

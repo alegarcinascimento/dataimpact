@@ -27,6 +27,10 @@ O conjunto e o gabarito foram escritos manualmente. Algumas perguntas compartilh
 
 O contexto considera antecessores e descendentes do ativo e prioriza candidatos conectados entre os candidatos recuperados. Não comprova relação causal e pode suprimir ocorrências úteis de outros domínios. Os incidentes lexicais sem correspondência continuam ausentes da busca lexical com grafo.
 
+## Como ler os indicadores
+
+**Recall@3** é a cobertura das ocorrências relevantes nas três primeiras sugestões. **NDCG@3** avalia se as ocorrências relevantes ficaram nas melhores posições. São medidas de recuperação de informação, não de resolução de incidentes. Veja os [exemplos em linguagem simples](METRICS.md).
+
 ## Resultados já executados
 
 O [relatório versionado](../public/retrieval-report.json) apresenta:

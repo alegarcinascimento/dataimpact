@@ -10,7 +10,7 @@ export function initializeLab(graph){
  }
  select.onchange=compare;compare();
  fetch('/retrieval-report.json').then(r=>{if(!r.ok)throw Error();return r.json();}).then(report=>{
-  const box=byId('benchmark-results');box.replaceChildren();const table=document.createElement('table');const head=document.createElement('thead');head.innerHTML='<tr><th>Método</th><th>Recall@3</th><th>NDCG@3</th></tr>';table.append(head);const body=document.createElement('tbody');
+  const box=byId('benchmark-results');box.replaceChildren();const table=document.createElement('table');const head=document.createElement('thead');head.innerHTML='<tr><th>Método</th><th title="Quanto dos incidentes relevantes apareceu nas três primeiras sugestões">Cobertura nos 3 primeiros (Recall@3)</th><th title="Quanto a ordem dos resultados se aproxima da melhor ordem do gabarito">Qualidade da ordem (NDCG@3)</th></tr>';table.append(head);const body=document.createElement('tbody');
   for(const r of report.results||[]){const row=document.createElement('tr');for(const value of [r.method,(r.recallAt3*100).toFixed(1)+'%',r.ndcgAt3.toFixed(3)]){const cell=document.createElement('td');cell.textContent=value;row.append(cell);}body.append(row);}table.append(body);box.append(table);byId('semantic-status').textContent=report.semanticStatus==='evaluated'?'Embeddings e quantização residual avaliados; consulte as condições e os resultados completos no relatório.':'Embeddings e Semantic IDs: não avaliados nesta execução. Configure o provedor e execute npm run evaluate -- --embed.';
  }).catch(()=>{byId('semantic-status').textContent='Relatório numérico indisponível. A comparação interativa por palavras continua disponível.';});
 }
