@@ -1,4 +1,4 @@
-# Guia de avaliação para mentores
+# Validação técnica e critérios de aceitação
 
 [Voltar ao README](../README.md) · [Laboratório Cypher](CYPHER.md)
 
@@ -8,17 +8,17 @@ O DataImpact aplica grafos a um problema operacional de engenharia de dados: exp
 
 A proposta combina relações direcionadas, caminhos explicáveis, carga idempotente e busca vetorial opcional. Não foi apresentado como produto de produção nem como mecanismo de confirmação automática de causa raiz.
 
-## Percurso sugerido: cinco minutos
+## Verificação funcional
 
-| Tempo | Ação | Evidência a observar |
+| Etapa | Ação | Evidência a observar |
 | --- | --- | --- |
-| 0:00–0:45 | Executar o HTML autônomo ou `npm run dev` | Aplicação identificada como demonstração com dados fictícios |
-| 0:45–1:30 | Escolher “Fechamento incompleto” | 13 consumidores, 5 relatórios, 7 equipes |
-| 1:30–2:15 | Abrir o caminho até o fechamento executivo | Cadeia com sete relações a partir de `raw.vendas` |
-| 2:15–3:00 | Selecionar o fechamento e alternar para origem | ERP, CRM e contabilidade no mesmo contexto |
-| 3:00–3:45 | Explorar a origem de fornecedores | Apenas um relatório dependente; domínio comercial preservado |
-| 3:45–4:30 | Pesquisar “fechamento com valores menores” | Evidência e solução histórica; modo da busca explícito |
-| 4:30–5:00 | Abrir testes e consultas | Resultados reproduzíveis, com limites documentados |
+| 1 | Executar o HTML autônomo ou `npm run dev` | Aplicação identificada como demonstração com dados fictícios |
+| 2 | Escolher “Fechamento incompleto” | 13 consumidores, 5 relatórios, 7 equipes |
+| 3 | Abrir o caminho até o fechamento executivo | Cadeia com sete relações a partir de `raw.vendas` |
+| 4 | Selecionar o fechamento e alternar para origem | ERP, CRM e contabilidade no mesmo contexto |
+| 5 | Explorar a origem de fornecedores | Apenas um relatório dependente; domínio comercial preservado |
+| 6 | Pesquisar “fechamento com valores menores” | Evidência e solução histórica; modo da busca explícito |
+| 7 | Abrir testes e consultas | Resultados reproduzíveis, com limites documentados |
 
 A interface tem três botões de cenário. O caso de fornecedores pode ser acessado pela busca de ativos ou pelo grafo.
 
@@ -35,8 +35,8 @@ Para embeddings, confirme o índice `ONLINE`, execute uma consulta e confira `mo
 | Domínio | `lib/data.js` | Conjunto coerente de fontes, processos, tabelas e produtos | Metadados reais anonimizados |
 | Identidade | `scripts/seed.js` | Constraints e `MERGE` por ID | Execução repetida em instância real |
 | Dependências | `lib/graph.js`, `public/graph.js` | BFS, visita única e um caminho por ativo | Desempenho em escala |
-| API | `api/graph.js`, `api/search.js` | Métodos, validação e erros explícitos | Deploy externo e política de acesso |
-| Neo4j | `lib/db.js` | Driver reutilizado, parâmetros e timeout | Integração na instância do avaliador |
+| API | `api/graph.js`, `api/search.js` | Métodos, validação e erros explícitos | Validação no ambiente de execução e política de acesso |
+| Neo4j | `lib/db.js` | Driver reutilizado, parâmetros e timeout | Integração na instância utilizada |
 | Recuperação | `scripts/embeddings.js`, `api/search.js` | Índice vetorial e busca real implementados | Recall@k e relevância com histórico maior |
 | Interface | `tests/ui.test.js` | Interações em DOM simulado | Revisão visual em navegador |
 | Qualidade | `.github/workflows/ci.yml` | Suíte automatizada no GitHub Actions | Testes de integração e carga |
@@ -72,6 +72,6 @@ Criar um histórico maior de incidentes com perguntas e respostas relevantes rot
 
 A hipótese a testar é: **o contexto de dependências pode melhorar a relevância operacional das ocorrências recuperadas por similaridade textual**. Isso é uma proposta de avaliação, ainda sem resultados.
 
-## Como contribuir com a revisão
+## Relatar resultados e problemas
 
 Abra uma [issue](https://github.com/alegarcinascimento/dataimpact/issues/new) com o cenário, a ação executada, o comportamento observado e o resultado esperado. Para sugestões de modelagem ou Cypher, indique qual pergunta de negócio a mudança permite responder e como validar sua correção.

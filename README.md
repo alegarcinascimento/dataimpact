@@ -15,8 +15,8 @@
   <a href="#experimente">Experimente</a> ·
   <a href="docs/ARCHITECTURE.md">Arquitetura</a> ·
   <a href="docs/CYPHER.md">Laboratório Cypher</a> ·
-  <a href="docs/MENTOR_REVIEW.md">Guia para mentores</a> ·
-  <a href="docs/INSTALLATION.md">Instalação e deploy</a>
+  <a href="docs/VALIDATION.md">Validação técnica</a> ·
+  <a href="docs/INSTALLATION.md">Instalação e configuração</a>
 </p>
 
 ## A pergunta que move o projeto
@@ -73,7 +73,7 @@ npm run seed
 npm run dev
 ```
 
-O indicador **“Neo4j conectado”** identifica o modo real. Configuração, compatibilidade, embeddings e Vercel estão no [guia de instalação](docs/INSTALLATION.md).
+O indicador **“Neo4j conectado”** identifica o modo real. Configuração, compatibilidade e embeddings estão no [guia de instalação](docs/INSTALLATION.md).
 
 ## Uma demonstração com respostas verificáveis
 
@@ -94,7 +94,7 @@ As contagens excluem o ativo selecionado e removem repetições. Dependência si
 4. Selecione **Fechamento executivo** e alterne para **Origem a montante**: ERP, CRM e sistema contábil participam do resultado.
 5. Pesquise **“fechamento com valores menores”** e consulte a evidência da ocorrência histórica.
 
-O [guia para mentores](docs/MENTOR_REVIEW.md) detalha resultados esperados, testes e perguntas de avaliação.
+O [guia de validação técnica](docs/VALIDATION.md) detalha resultados esperados, testes e perguntas de avaliação.
 
 ## Por que um grafo?
 
@@ -149,7 +149,7 @@ npm test
 
 A suíte contém **8 testes automatizados**, incluindo resultados esperados por cenário, proteção contra ciclos, integridade do conjunto, API HTTP e interações da interface em DOM simulado. A [pipeline do GitHub Actions](https://github.com/alegarcinascimento/dataimpact/actions/workflows/ci.yml) apresenta o resultado de cada execução.
 
-Não há benchmark de desempenho nem avaliação de recuperação semântica publicados. A validação integrada de Neo4j, provedor de embeddings e deploy precisa ser executada na instância utilizada. Testes de DOM não comprovam o layout visual em navegador.
+Não há benchmark de desempenho nem avaliação de recuperação semântica publicados. A validação integrada de Neo4j e provedor de embeddings precisa ser executada na instância utilizada. Testes de DOM não comprovam o layout visual em navegador.
 
 ## Decisões, limites e evolução
 
@@ -169,13 +169,13 @@ O escopo atual é um **MVP de portfólio com integração Neo4j implementada**, 
 | --- | --- |
 | [Arquitetura e modelo](docs/ARCHITECTURE.md) | Schema, contratos, modos, decisões e escalabilidade |
 | [Laboratório Cypher](docs/CYPHER.md) | Consultas de exploração, resultados esperados e cuidados |
-| [Guia para mentores](docs/MENTOR_REVIEW.md) | Demonstração, evidências, avaliação e perguntas técnicas |
-| [Instalação e deploy](docs/INSTALLATION.md) | Execução local, Neo4j, embeddings, Vercel e diagnóstico |
+| [Validação técnica](docs/VALIDATION.md) | Cenários de teste, evidências e critérios de validação |
+| [Instalação e configuração](docs/INSTALLATION.md) | Execução local, Neo4j, embeddings e diagnóstico |
 | [Contribuição](CONTRIBUTING.md) | Como propor melhorias com resultados reproduzíveis |
 
 ## Referências e autoria
 
-[Neo4j JavaScript Driver](https://neo4j.com/docs/javascript-manual/current/) · [Cypher](https://neo4j.com/docs/cypher-manual/current/) · [Índices vetoriais](https://neo4j.com/docs/cypher-manual/current/indexes/search-indexes/vector-indexes/) · [Vercel Functions](https://vercel.com/docs/functions/runtimes/node-js)
+[Neo4j JavaScript Driver](https://neo4j.com/docs/javascript-manual/current/) · [Cypher](https://neo4j.com/docs/cypher-manual/current/) · [Índices vetoriais](https://neo4j.com/docs/cypher-manual/current/indexes/search-indexes/vector-indexes/)
 
 Desenvolvido no contexto de um portfólio de engenharia de dados, com apoio de IA na implementação e documentação. O repositório concentra código, decisões e testes para revisão e reprodução pela comunidade.
 
