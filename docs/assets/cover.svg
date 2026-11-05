@@ -1,1 +1,61 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="400" viewBox="0 0 1280 400" role="img" aria-labelledby="title desc"><title id="title">DataImpact — Graph intelligence for data teams</title><desc id="desc">Capa editorial do projeto, com rede ilustrativa de dependências. Não é uma captura da aplicação.</desc><defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#102d3a"/><stop offset="1" stop-color="#164d50"/></linearGradient><pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#89bcb9" opacity=".12"/></pattern></defs><rect width="1280" height="400" rx="20" fill="url(#bg)"/><rect width="1280" height="400" fill="url(#grid)"/><g font-family="Arial, sans-serif"><text x="62" y="68" fill="#82d7c1" font-size="12" letter-spacing="3">NEO4J · DATA LINEAGE · INCIDENT INVESTIGATION</text><text x="58" y="151" fill="#fff" font-size="72" font-weight="700" letter-spacing="-3">DataImpact</text><text x="62" y="204" fill="#d1e4e6" font-size="25">Entenda o impacto. Encontre a origem.</text><text x="62" y="252" fill="#9dbec3" font-size="16">Dependências visíveis. Investigações explicáveis.</text><rect x="62" y="301" width="137" height="35" rx="17" fill="#25585b"/><text x="82" y="323" fill="#b8e5d9" font-size="12">28 ativos fictícios</text><rect x="212" y="301" width="165" height="35" rx="17" fill="#25585b"/><text x="232" y="323" fill="#b8e5d9" font-size="12">3 cenários de análise</text><rect x="390" y="301" width="146" height="35" rx="17" fill="#25585b"/><text x="409" y="323" fill="#b8e5d9" font-size="12">24 testes automáticos</text></g><g fill="none" stroke="#599b96" stroke-width="2"><path d="M820 110 C895 110 880 195 950 195 S1020 110 1095 110"/><path d="M820 285 C895 285 880 195 950 195 S1020 285 1095 285"/><path d="M950 195 H1180"/><path d="M820 110 V285" opacity=".3"/></g><g stroke-width="2"><circle cx="820" cy="110" r="23" fill="#335f7c" stroke="#91b4d5"/><circle cx="820" cy="285" r="23" fill="#335f7c" stroke="#91b4d5"/><circle cx="950" cy="195" r="32" fill="#197666" stroke="#89ddc5"/><circle cx="1095" cy="110" r="23" fill="#5b547f" stroke="#b1a6d5"/><circle cx="1095" cy="285" r="23" fill="#5b547f" stroke="#b1a6d5"/><circle cx="1180" cy="195" r="23" fill="#8c6944" stroke="#dfbb8a"/></g><g font-family="Arial,sans-serif" font-size="10" fill="#b6d0d2" text-anchor="middle"><text x="820" y="154">FONTES</text><text x="950" y="248">DEPENDÊNCIAS</text><text x="1095" y="154">PROCESSOS</text><text x="1180" y="239">DECISÕES</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="640" viewBox="0 0 1600 640" role="img" aria-labelledby="title description">
+<title id="title">DataImpact: monitoramento de dados e análise de impacto</title>
+<desc id="description">Ilustração vetorial: um alerta de carga parcial ligado ao caminho de uma fonte até dois produtos de dados. Não é uma captura da aplicação.</desc>
+<defs>
+ <linearGradient id="background" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1d2c"/><stop offset="1" stop-color="#123740"/></linearGradient>
+ <radialGradient id="light"><stop stop-color="#208d7b" stop-opacity=".2"/><stop offset="1" stop-color="#208d7b" stop-opacity="0"/></radialGradient>
+ <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#6ea5a9" opacity=".13"/></pattern>
+ <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#55baaa" stroke-width="1.3"/></marker>
+ <clipPath id="clip"><rect width="1600" height="640" rx="24"/></clipPath>
+</defs>
+<g clip-path="url(#clip)">
+ <rect width="1600" height="640" fill="url(#background)"/><rect width="1600" height="640" fill="url(#dots)"/><ellipse cx="1250" cy="290" rx="590" ry="450" fill="url(#light)"/>
+ <path d="M0 639H1600" stroke="#398577" stroke-width="3"/>
+ <g font-family="DejaVu Sans,Arial,sans-serif">
+  <rect x="72" y="64" width="42" height="42" rx="11" fill="#1a4b4a" stroke="#397c71"/>
+  <g stroke="#87e0c7" stroke-width="2" fill="#87e0c7"><path d="M83 91L94 77L104 91" fill="none"/><circle cx="83" cy="91" r="3"/><circle cx="94" cy="77" r="3"/><circle cx="104" cy="91" r="3"/></g>
+  <text x="130" y="91" fill="#91b6bb" font-size="17" letter-spacing="3">DATA QUALITY · GRAPH INTELLIGENCE</text>
+  <text x="66" y="222" fill="#f5fafb" font-size="88" font-weight="700" letter-spacing="-4">DataImpact</text>
+  <text x="72" y="292" fill="#e3f0f1" font-size="34" font-weight="500">Identifique o problema.</text>
+  <text x="72" y="340" fill="#86d7c2" font-size="34" font-weight="500">Entenda o impacto.</text>
+  <text x="72" y="398" fill="#9db8bf" font-size="21">Dependências, evidências e histórico</text>
+  <text x="72" y="430" fill="#9db8bf" font-size="21">para equipes que trabalham com dados.</text>
+  <path d="M72 478H690" stroke="#2c4b58"/>
+  <text x="72" y="522" fill="#d0e2e5" font-size="17">NEO4J</text><circle cx="153" cy="516" r="3" fill="#4f9b8b"/>
+  <text x="172" y="522" fill="#d0e2e5" font-size="17">POSTGRESQL</text><circle cx="306" cy="516" r="3" fill="#4f9b8b"/>
+  <text x="325" y="522" fill="#d0e2e5" font-size="17">JSON / CSV</text><circle cx="445" cy="516" r="3" fill="#4f9b8b"/>
+  <text x="464" y="522" fill="#d0e2e5" font-size="17">OPEN SOURCE</text>
+  <text x="72" y="580" fill="#5f8790" font-size="15">Da origem à decisão, com caminhos rastreáveis.</text>
+  <rect x="796" y="64" width="732" height="510" rx="18" fill="#0e2634" stroke="#2c5059"/>
+  <path d="M797 125H1527" stroke="#2c5059"/>
+  <circle cx="825" cy="95" r="4" fill="#68c6ad"/>
+  <text x="843" y="101" fill="#c5dce0" font-size="17">Fluxo de investigação</text>
+  <text x="1394" y="101" fill="#7299a2" font-size="13">ILUSTRAÇÃO</text>
+  <rect x="826" y="147" width="672" height="69" rx="10" fill="#342c29" stroke="#765140"/>
+  <circle cx="854" cy="180" r="13" fill="#cc8659"/><text x="851" y="186" fill="#1b252b" font-size="18" font-weight="700">!</text>
+  <text x="881" y="175" fill="#f0d4bd" font-size="18" font-weight="600">Carga parcial detectada</text>
+  <text x="881" y="199" fill="#ba9c86" font-size="15">Investigue a origem e os consumidores.</text>
+  <g fill="none" stroke="#55baaa" stroke-width="2" marker-end="url(#arrow)">
+   <path d="M1005 331H1088"/>
+   <path d="M1248 331C1292 331 1263 282 1310 282"/>
+   <path d="M1248 331C1292 331 1263 402 1310 402"/>
+  </g>
+  <rect x="839" y="296" width="166" height="70" rx="11" fill="#213e52" stroke="#547e9b"/>
+  <text x="922" y="324" text-anchor="middle" fill="#d4e6ed" font-size="18">Fonte</text>
+  <text x="922" y="348" text-anchor="middle" fill="#8faebd" font-size="14">Pedidos</text>
+  <rect x="1088" y="296" width="160" height="70" rx="11" fill="#183f3d" stroke="#56b5a0"/>
+  <text x="1168" y="324" text-anchor="middle" fill="#d0eee5" font-size="18">Processo</text>
+  <text x="1168" y="348" text-anchor="middle" fill="#87bbae" font-size="14">Consolidação</text>
+  <rect x="1310" y="247" width="168" height="70" rx="11" fill="#2c3349" stroke="#7f85a7"/>
+  <text x="1394" y="275" text-anchor="middle" fill="#e1e1ef" font-size="18">Relatório</text>
+  <text x="1394" y="299" text-anchor="middle" fill="#a4abc3" font-size="14">Comercial</text>
+  <rect x="1310" y="367" width="168" height="70" rx="11" fill="#2c3349" stroke="#7f85a7"/>
+  <text x="1394" y="395" text-anchor="middle" fill="#e1e1ef" font-size="18">Indicador</text>
+  <text x="1394" y="419" text-anchor="middle" fill="#a4abc3" font-size="14">Operacional</text>
+  <path d="M826 470H1498" stroke="#2c5059"/>
+  <circle cx="844" cy="509" r="5" fill="#66c7ad"/><text x="860" y="515" fill="#9cbbc1" font-size="15">Evidência</text>
+  <circle cx="1065" cy="509" r="5" fill="#66c7ad"/><text x="1081" y="515" fill="#9cbbc1" font-size="15">Dependências</text>
+  <circle cx="1310" cy="509" r="5" fill="#66c7ad"/><text x="1326" y="515" fill="#9cbbc1" font-size="15">Histórico</text>
+ </g>
+</g>
+</svg>

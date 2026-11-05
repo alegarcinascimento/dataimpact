@@ -56,7 +56,7 @@ RETURN report.id AS id,
 ORDER BY report;
 ```
 
-Esperado: cinco relatórios — **Conciliação contábil**, **Fechamento executivo**, **Painel comercial**, **Painel de margem** e **Projeção de receita**. O **Painel de fornecedores** fica fora do resultado.
+Esperado: cinco relatórios: **Conciliação contábil**, **Fechamento executivo**, **Painel comercial**, **Painel de margem** e **Projeção de receita**. O **Painel de fornecedores** fica fora do resultado.
 
 A agregação evita repetir o relatório quando há caminhos compartilhados. O limite de 20 relações atende ao seed; não implica completude para qualquer catálogo.
 

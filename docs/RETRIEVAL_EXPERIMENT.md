@@ -103,4 +103,4 @@ O teste automatizado do pipeline usa vetores numéricos artificiais exclusivamen
 
 ## Referência
 
-[Rajput et al. — Recommender Systems with Generative Retrieval, NeurIPS 2023](https://proceedings.neurips.cc/paper/2023/hash/20dcab0f14046a5c6b02b61da9f13229-Abstract.html)
+[Rajput et al.: Recommender Systems with Generative Retrieval, NeurIPS 2023](https://proceedings.neurips.cc/paper/2023/hash/20dcab0f14046a5c6b02b61da9f13229-Abstract.html)

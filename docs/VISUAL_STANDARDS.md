@@ -6,7 +6,7 @@ A documentação deve apresentar o sistema com legibilidade, consistência e evi
 
 ## Capturas reais da aplicação
 
-Use capturas da interface em funcionamento, com dados fictícios ou autorizados. Para imagens amplas do README, capture em viewport de 1.440–1.920 pixels com escala de dispositivo 2; preserve o PNG original. Recorte sem ampliar e verifique se rótulos e valores continuam legíveis na largura do GitHub.
+Use capturas da interface em funcionamento, com dados fictícios ou autorizados. Para imagens amplas do README, capture em viewport de 1.440 a 1.920 pixels com escala de dispositivo 2; preserve o PNG original. Recorte sem ampliar e verifique se rótulos e valores continuam legíveis na largura do GitHub.
 
 Cada captura deve ter uma legenda indicando cenário, modo de dados e ação demonstrada. Não invente uma tela em um gerador de imagens para apresentá-la como resultado do código. Não publique credenciais, endereços internos ou informações pessoais nas capturas.
 

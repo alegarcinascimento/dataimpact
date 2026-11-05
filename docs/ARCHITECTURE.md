@@ -87,7 +87,7 @@ A lógica está em `lib/graph.js` e em sua cópia para o navegador `public/graph
 | --- | --- | --- | --- |
 | `GET /api/graph` | Sem parâmetros | `nodes`, `edges`, `incidents`, `mode`, `issues`, `evaluatedAt` | 503 para falha de consulta ou limite do grafo |
 | `GET /api/search?q=...` | Texto de 3 a 300 caracteres após trim | `mode`, `items` | 400 para texto inválido; 503 para falha de busca |
-| Ambas | Método diferente de GET | — | 405 |
+| Ambas | Método diferente de GET | Não se aplica | 405 |
 
 As respostas usam `Cache-Control: no-store`. Propriedades de embedding são removidas das projeções dos incidentes. IDs de ativos não são enviados como Cypher arbitrário; as consultas com parâmetros usam os mecanismos do driver.
 

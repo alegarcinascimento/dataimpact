@@ -51,7 +51,7 @@ O programa calcula a métrica para cada uma das oito perguntas e depois faz a m�
 
 A diferença de cobertura é **10,4 pontos percentuais** nesse conjunto sintético. O conjunto tem apenas 24 ocorrências, perguntas elaboradas manualmente e relevâncias definidas pelo mesmo processo de elaboração. Não há intervalo de confiança, comparação cega ou validação externa. Embeddings e Semantic IDs continuam sem resultado de qualidade medido na execução publicada.
 
-## Como usar essas medidas no piloto
+## Como usar essas medidas na avaliação
 
 Defina primeiro qual decisão precisa melhorar. Para uma pessoa investigando um alerta, encontrar uma evidência útil cedo pode ser mais importante que aumentar o número total de resultados. Combine métricas de busca com revisão humana, tempo até evidência útil, custo e análise dos erros.
 
