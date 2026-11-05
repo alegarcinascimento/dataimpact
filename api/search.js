@@ -1,4 +1,4 @@
-import {demo} from '../lib/data.js';
+import {loadSource} from '../lib/source.js';
 import {lexicalSearch} from '../lib/graph.js';
 import {query} from '../lib/db.js';
 export default async function handler(req,res){
@@ -6,7 +6,7 @@ export default async function handler(req,res){
  if(req.method!=='GET')return res.status(405).json({error:'Método não permitido'});
  const q=String(req.query?.q||'').trim(); if(q.length<3||q.length>300)return res.status(400).json({error:'Descreva o problema em 3 a 300 caracteres.'});
  try {
- if(process.env.DATA_MODE!=='neo4j')return res.status(200).json({mode:'lexical',items:lexicalSearch(demo.incidents,q)});
+ if(process.env.DATA_MODE!=='neo4j'){const graph=await loadSource();return res.status(200).json({mode:'lexical',items:lexicalSearch(graph.incidents,q)});}
  if(!process.env.OPENAI_API_KEY){
  const records=await query('MATCH (i:DIIncident) RETURN i {.*, embedding:null} AS item LIMIT 201');
  if(records.length>200)throw new Error('Search dataset too large');

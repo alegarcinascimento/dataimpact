@@ -1,5 +1,5 @@
 export function traverse(graph, start, direction = 'downstream') {
-  const visited = new Set([start]), queue = [start], paths = {[start]: [start]};
+  const visited = new Set([start]), queue = [start], paths = Object.assign(Object.create(null), {[start]: [start]});
   for (let i=0; i<queue.length; i++) {
     const current=queue[i];
     for (const edge of graph.edges) {

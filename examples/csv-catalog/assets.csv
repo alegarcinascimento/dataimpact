@@ -1,0 +1,3 @@
+id,label,kind,owner,description,minRows,maxAgeMinutes
+orders,Pedidos,table,Dados comerciais,Pedidos recebidos,3,60
+report,Relatório comercial,report,Comercial,Indicadores de pedidos,,

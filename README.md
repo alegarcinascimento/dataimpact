@@ -38,11 +38,31 @@ O DataImpact organiza esse contexto em um grafo navegável. Cada resultado de al
 | Explicabilidade | Mostra um caminho mínimo em número de relações para cada ativo alcançado |
 | Simulação | Destaca o alcance potencial de uma indisponibilidade sem alterar processos |
 | Contexto operacional | Identifica as equipes responsáveis pelos ativos alcançados |
+| Verificações de dados | Detecta violações de volume e atualização a partir de métricas coletadas |
+| Conectores | Importa JSON/CSV, mede arquivos CSV e coleta objetos PostgreSQL selecionados |
 | Memória de incidentes | Exibe ocorrência, evidência e solução histórica |
 | Busca semântica opcional | Recupera incidentes por embeddings armazenados no Neo4j |
 | Exportação | Gera JSON com ativo, direção, caminhos e identificação do modo de dados |
 
+**Dados próprios:** importe catálogos JSON/CSV, meça arquivos CSV e conecte objetos PostgreSQL para coletar métricas e dependências de views. Consulte o [guia de conexão de dados](docs/DATA_SOURCES.md).
+
 **Conjunto demonstrativo:** 28 ativos, 28 relações `FEEDS` e 4 incidentes fictícios. No Neo4j, a carga também cria 4 relações `OCCURRED_ON`, totalizando 32 nós e 32 relações. A visualização principal apresenta somente os ativos e as 28 relações de fluxo.
+
+## Usar com seus próprios dados
+
+```bash
+git clone https://github.com/alegarcinascimento/dataimpact.git
+cd dataimpact
+npm ci
+npm run import:catalog -- --input examples/catalog.json
+npm run profile:csv -- --file examples/orders.csv --asset orders --timestamp updated_at
+```
+
+Copie `.env.example` para `.env`, defina `DATA_MODE=file` e execute `npm run dev`. O exemplo produz alertas de volume insuficiente e atualização atrasada com caminho até o relatório dependente.
+
+Para uma fonte PostgreSQL, configure a conexão no ambiente e execute `npm run collect:postgres -- --config examples/postgres.json`. Para persistir o catálogo no Neo4j, use `npm run import:catalog -- --input .data/catalog.json --target neo4j` e ative `DATA_MODE=neo4j`.
+
+[Contrato de entrada, configuração, regras e limites](docs/DATA_SOURCES.md).
 
 ## Experimente
 
@@ -147,30 +167,33 @@ A solução não gera respostas com LLM e não implementa GraphRAG completo. Sim
 npm test
 ```
 
-A suíte contém **8 testes automatizados**, incluindo resultados esperados por cenário, proteção contra ciclos, integridade do conjunto, API HTTP e interações da interface em DOM simulado. A [pipeline do GitHub Actions](https://github.com/alegarcinascimento/dataimpact/actions/workflows/ci.yml) apresenta o resultado de cada execução.
+A suíte contém **17 testes automatizados**, incluindo cenários, ciclos, validação de catálogo, coleta CSV, regras, protocolo PostgreSQL simulado, API com dados próprios e interações da interface em DOM simulado. A [pipeline do GitHub Actions](https://github.com/alegarcinascimento/dataimpact/actions/workflows/ci.yml) apresenta o resultado de cada execução.
 
-Não há benchmark de desempenho nem avaliação de recuperação semântica publicados. A validação integrada de Neo4j e provedor de embeddings precisa ser executada na instância utilizada. Testes de DOM não comprovam o layout visual em navegador.
+Não há benchmark de desempenho nem avaliação de recuperação semântica publicados. A validação integrada de PostgreSQL, Neo4j e provedor de embeddings precisa ser executada na instância utilizada. Testes de DOM não comprovam o layout visual em navegador.
 
 ## Decisões, limites e evolução
 
 | Hoje | Próxima evolução proposta | Critério de conclusão |
 | --- | --- | --- |
-| Dependências cadastradas por ativo | Linhagem por coluna e ingestão de metadados | Importar um fluxo real anonimizado e validar relações |
+| Catálogo importável e dependências de views PostgreSQL | Linhagem por coluna e novos conectores | Validar extração com instância real e contratos de origem |
 | Grafo pequeno carregado na interface | Expansão no servidor e orçamento de travessia | Comparar respostas e medir latência em conjuntos maiores |
 | Busca vetorial independente da topologia | Reranking de incidentes por conexão com o ativo | Comparar Recall@k e relevância com baseline lexical |
 | Equipe como propriedade | Equipes como nós quando o caso justificar | Consultar responsabilidades compartilhadas sem duplicação |
 | API pública com dados fictícios | Controle de acesso e limitação de uso | Testes de autorização e limites antes de dados internos |
 
-O escopo atual é um **MVP de portfólio com integração Neo4j implementada**, ainda sem validação externa documentada. Não há previsão de prejuízo, detecção automática de anomalias, causalidade confirmada ou integração AWS nesta versão.
+O escopo atual é um **MVP de portfólio com integração Neo4j implementada**, ainda sem validação externa documentada. As verificações atuais seguem regras explícitas de volume e atualização; não há previsão de prejuízo, detecção estatística de anomalias, causalidade confirmada ou integração AWS nesta versão.
 
 ## Documentação
 
 | Leitura | O que você vai encontrar |
 | --- | --- |
+| [Conectar dados próprios](docs/DATA_SOURCES.md) | JSON, CSV, PostgreSQL, regras e rastreamento dos alertas |
 | [Arquitetura e modelo](docs/ARCHITECTURE.md) | Schema, contratos, modos, decisões e escalabilidade |
 | [Laboratório Cypher](docs/CYPHER.md) | Consultas de exploração, resultados esperados e cuidados |
 | [Validação técnica](docs/VALIDATION.md) | Cenários de teste, evidências e critérios de validação |
 | [Instalação e configuração](docs/INSTALLATION.md) | Execução local, Neo4j, embeddings e diagnóstico |
+| [Extensão geoespacial proposta](docs/GEOAI.md) | Caso de uso, arquitetura e validação necessária para GeoAI |
+| [Padrão visual](docs/VISUAL_STANDARDS.md) | Capturas, diagramas, fotografias e revisão técnica |
 | [Contribuição](CONTRIBUTING.md) | Como propor melhorias com resultados reproduzíveis |
 
 ## Referências e autoria

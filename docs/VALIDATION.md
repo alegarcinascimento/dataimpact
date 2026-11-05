@@ -41,7 +41,7 @@ Para embeddings, confirme o índice `ONLINE`, execute uma consulta e confira `mo
 | Interface | `tests/ui.test.js` | Interações em DOM simulado | Revisão visual em navegador |
 | Qualidade | `.github/workflows/ci.yml` | Suíte automatizada no GitHub Actions | Testes de integração e carga |
 
-## Oito testes, oito evidências
+## Evidências de teste
 
 | Teste | Afirmação verificada |
 | --- | --- |
@@ -75,3 +75,9 @@ A hipótese a testar é: **o contexto de dependências pode melhorar a relevânc
 ## Relatar resultados e problemas
 
 Abra uma [issue](https://github.com/alegarcinascimento/dataimpact/issues/new) com o cenário, a ação executada, o comportamento observado e o resultado esperado. Para sugestões de modelagem ou Cypher, indique qual pergunta de negócio a mudança permite responder e como validar sua correção.
+
+## Validação de dados próprios
+
+A suíte completa contém 17 testes. Os novos casos cobrem rejeição de catálogos inválidos, roundtrip de arquivo, CSV real, regras nos limites, falhas de timestamp, protocolo PostgreSQL com cliente simulado, rollback, API em modo arquivo e interface com alertas e IDs próprios. A suíte não acessa um servidor PostgreSQL real.
+
+Para reproduzir a jornada de ingestão, execute os comandos do [guia de conexão](DATA_SOURCES.md). O exemplo CSV deve registrar duas linhas, gerar baixo volume e atraso e permitir rastrear a origem até o relatório. O modo de catálogo próprio deve ocultar os cenários fictícios.

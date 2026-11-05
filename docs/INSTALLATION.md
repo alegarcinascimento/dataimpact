@@ -14,7 +14,7 @@ Este guia descreve a instalação a partir do código, a configuração do Neo4j
 | Neo4j | Instância acessível pelo driver oficial; opcional no modo demo |
 | Provedor de embeddings | Opcional; necessário apenas para a busca semântica |
 
-O único pacote de produção é o driver oficial do Neo4j. A interface usa HTML, CSS, JavaScript e SVG. Não há build obrigatório para executar o servidor local.
+As dependências de produção incluem o driver oficial do Neo4j, node-postgres e CSV Parse. A interface usa HTML, CSS, JavaScript e SVG. Não há build obrigatório para executar o servidor local.
 
 ## 1. Clonar e instalar
 
@@ -44,7 +44,7 @@ No PowerShell, use `Copy-Item .env.example .env`. Edite o arquivo localmente:
 
 | Variável | Uso | Valor ou orientação |
 | --- | --- | --- |
-| `DATA_MODE` | Selecionar a fonte de dados | `demo` ou `neo4j`; somente `neo4j` ativa o banco |
+| `DATA_MODE` | Selecionar a fonte de dados | `demo`, `file` ou `neo4j`; `file` lê um catálogo próprio |
 | `NEO4J_URI` | Endereço da instância | Use a URI fornecida pela instância, incluindo o esquema TLS apropriado |
 | `NEO4J_USERNAME` | Usuário de conexão | Usuário autorizado no banco |
 | `NEO4J_PASSWORD` | Senha | Mantenha apenas no ambiente local ou no gerenciador de segredos |
@@ -103,7 +103,7 @@ Confirme `mode: semantic` na resposta de `/api/search?q=fechamento%20menores`. S
 npm test
 ```
 
-A suíte contém oito testes para cenários, ciclos, integridade, busca lexical, API HTTP e interações em DOM simulado. Confira também os [critérios funcionais](VALIDATION.md) e o [laboratório Cypher](CYPHER.md).
+A suíte contém 17 testes para cenários, ciclos, integridade, busca lexical, API HTTP e interações em DOM simulado. Confira também os [critérios funcionais](VALIDATION.md) e o [laboratório Cypher](CYPHER.md).
 
 Os testes automatizados atuais não comprovam conexão externa com Neo4j ou provedor de embeddings. Valide essas integrações no ambiente utilizado. O layout visual requer revisão em navegador.
 
@@ -115,7 +115,11 @@ npm start
 
 `npm start` e `npm run dev` executam o mesmo servidor Node.js. Não há reinício automático por alteração de arquivos; reinicie o processo após mudar código ou configuração.
 
-## 7. Adaptar ao seu catálogo
+## 7. Conectar seu catálogo
+
+Use o [guia de dados próprios](DATA_SOURCES.md) para importar JSON/CSV, coletar métricas de arquivos ou conectar uma fonte PostgreSQL. O modo `DATA_MODE=file` usa `GRAPH_FILE`, cujo padrão é `.data/catalog.json`. A alternativa é importar o snapshot para o Neo4j.
+
+### Contrato e adaptação
 
 O conjunto de origem está em [`lib/data.js`](../lib/data.js). O [modelo técnico](ARCHITECTURE.md#modelo-persistido) descreve as propriedades esperadas.
 
@@ -125,9 +129,9 @@ O conjunto de origem está em [`lib/data.js`](../lib/data.js). O [modelo técnic
 | Dependências | Registre `source → target` no sentido de fornecimento dos dados |
 | Incidentes | Relacione a ocorrência a um ID de ativo existente |
 | Cenários da interface | Ajuste os IDs dos três botões no HTML e a seleção inicial/reset em `public/app.js` |
-| Embeddings | Adapte o conjunto de incidentes em `lib/data.js` antes de gerar os vetores |
+| Embeddings | Cadastre incidentes no Neo4j antes de gerar os vetores; o script lê o banco configurado |
 
-A interface foi preparada para os IDs do conjunto fictício. Trocar somente o banco sem adaptar os cenários pode deixar botões sem resultado. O script de embeddings também usa o conjunto de `lib/data.js`, não um carregamento automático de todos os incidentes do banco.
+A interface aceita catálogos próprios sem depender dos IDs dos exemplos. O script de embeddings consulta até 200 incidentes do banco configurado. Os três cenários fictícios ficam ocultos no modo de catálogo próprio, e a seleção inicial usa um ativo existente.
 
 Depois de alterar dados ou comportamento:
 
@@ -153,7 +157,7 @@ O servidor não implementa autenticação, autorização ou rate limit. Antes de
 | Erro 503 no grafo | Confira URI, TLS, conectividade, permissões e limites do catálogo |
 | Busca semântica indisponível | Confira chave, modelo, dimensão, procedure e índice ONLINE |
 | Busca lexical sem resultado | Experimente palavras presentes no histórico; não há inferência de sinônimos |
-| Botão de cenário sem resultado | Confira se os IDs esperados existem no catálogo adaptado |
+| Nenhum alerta no catálogo próprio | Configure regras e colete métricas; consulte `observedAt` |
 | Porta ocupada | Configure `PORT` e reinicie; acesse a porta escolhida |
 
 ## Referências

@@ -1,0 +1,38 @@
+{
+  "nodes": [
+    {
+      "id": "orders",
+      "label": "Pedidos",
+      "kind": "table",
+      "owner": "Dados comerciais",
+      "description": "Pedidos recebidos da operação.",
+      "minRows": 3,
+      "maxAgeMinutes": 60
+    },
+    {
+      "id": "transform",
+      "label": "Consolidação",
+      "kind": "job",
+      "owner": "Engenharia",
+      "description": "Transforma pedidos em indicadores."
+    },
+    {
+      "id": "report",
+      "label": "Relatório comercial",
+      "kind": "report",
+      "owner": "Comercial",
+      "description": "Indicadores dependentes da origem de pedidos."
+    }
+  ],
+  "edges": [
+    {
+      "source": "orders",
+      "target": "transform"
+    },
+    {
+      "source": "transform",
+      "target": "report"
+    }
+  ],
+  "incidents": []
+}

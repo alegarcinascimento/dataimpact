@@ -15,9 +15,9 @@ flowchart TD
   EMB -->|Vetor da pergunta| API
 ```
 
-A aplicação contém duas rotas públicas de leitura. O modo demonstração é o padrão; somente `DATA_MODE=neo4j` ativa o banco. Se o banco falhar, a API retorna erro. Ela não substitui silenciosamente o resultado por um conjunto local.
+A aplicação contém duas rotas públicas de leitura. Há três modos: `demo` para dados fictícios, `file` para catálogo JSON próprio e `neo4j` para persistência em grafo. Valores desconhecidos são recusados. Se o banco falhar, a API retorna erro. Ela não substitui silenciosamente o resultado por um conjunto local.
 
-O HTML autônomo é um terceiro formato de distribuição da demonstração, gerado por `scripts/build-preview.js`. Ele incorpora dados e lógica, sem usar API ou Neo4j. É útil para avaliar a experiência, mas não comprova integração com o banco.
+O HTML autônomo é um formato de distribuição da demonstração, gerado por `scripts/build-preview.js`. Ele incorpora dados e lógica, sem usar API ou Neo4j. É útil para avaliar a experiência, mas não comprova integração com o banco.
 
 ## Modelo persistido
 
@@ -85,7 +85,7 @@ A lógica está em `lib/graph.js` e em sua cópia para o navegador `public/graph
 
 | Rota | Entrada | Resposta de sucesso | Erros previstos |
 | --- | --- | --- | --- |
-| `GET /api/graph` | Sem parâmetros | `nodes`, `edges`, `incidents`, `mode` | 503 para falha de consulta ou limite do grafo |
+| `GET /api/graph` | Sem parâmetros | `nodes`, `edges`, `incidents`, `mode`, `issues`, `evaluatedAt` | 503 para falha de consulta ou limite do grafo |
 | `GET /api/search?q=...` | Texto de 3 a 300 caracteres após trim | `mode`, `items` | 400 para texto inválido; 503 para falha de busca |
 | Ambas | Método diferente de GET | — | 405 |
 
@@ -95,7 +95,7 @@ As respostas usam `Cache-Control: no-store`. Propriedades de embedding são remo
 
 **Lexical:** normaliza acentos e caixa, ignora tokens com até dois caracteres e conta quantos termos da consulta aparecem como substring no título, descrição ou tags. Não é BM25; não há análise morfológica, sinônimos, calibração ou probabilidade.
 
-**Vetorial:** a carga opcional envia título e descrição dos incidentes ao provedor, grava vetores e cria índice de cosseno. A consulta gera um vetor com o mesmo modelo e dimensão e pede os quatro vizinhos mais próximos ao Neo4j. Não há limiar mínimo de relevância nem reranking; com apenas quatro incidentes, a recuperação pode devolver todo o histórico. O score não é apresentado como confiança de causa.
+**Vetorial:** a carga opcional consulta os incidentes do Neo4j e envia seus títulos e descrições ao provedor, grava vetores e cria índice de cosseno. A consulta gera um vetor com o mesmo modelo e dimensão e pede os quatro vizinhos mais próximos ao Neo4j. Não há limiar mínimo de relevância nem reranking; com apenas quatro incidentes, a recuperação pode devolver todo o histórico. O score não é apresentado como confiança de causa.
 
 A implementação usa `db.index.vector.queryNodes`. A documentação oficial marca essa procedure como depreciada a partir de Neo4j 2026.04 e recomenda `SEARCH` nas versões compatíveis. A migração é uma evolução pendente; confirme a versão e o suporte da instância antes de ativar a busca. Consulte a [referência oficial](https://neo4j.com/docs/cypher-manual/current/indexes/search-indexes/vector-indexes/).
 
@@ -106,3 +106,11 @@ O driver é reutilizado, com pool máximo de 5 conexões, timeout de conexão de
 A API não implementa autenticação, autorização por ativo ou rate limit. O conjunto público deve permanecer fictício. Uma chave de embeddings em uma API pública permite consumo pelo público; não publique essa modalidade amplamente antes de adicionar controles de uso e custo.
 
 Não há logs de auditoria, histórico de alterações de linhagem nem métricas de operação nesta versão. Não foi realizado teste integrado com instância Neo4j ou provedor de embeddings no ambiente de desenvolvimento desta entrega.
+
+## Ingestão e verificações
+
+O [guia de dados próprios](DATA_SOURCES.md) descreve os contratos. `lib/catalog.js` valida IDs, referências, tipos e limites. `lib/checks.js` avalia volume e atualização e anexa os caminhos de impacto a cada violação. As regras ficam em propriedades do ativo, sem um motor de expressão arbitrária.
+
+O modo arquivo lê um snapshot local, e o importador Neo4j faz upsert transacional. A coleta PostgreSQL ocorre em um processo administrativo separado, com uma transação somente leitura; arquivos de dados são perfilados localmente. Não há endpoint público de importação. A descoberta PostgreSQL cobre relações de views entre objetos selecionados; não cria linhagem de ferramentas externas.
+
+Alertas são calculados no carregamento e não são persistidos como incidentes históricos. Não há agendamento nem SLA de idade da coleta. O timestamp de observação acompanha a métrica; os detalhes operacionais e limites estão documentados no guia de conexão.

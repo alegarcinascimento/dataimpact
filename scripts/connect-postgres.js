@@ -1,0 +1,3 @@
+import {parseArgs} from 'node:util';import {readBounded,saveCatalog} from '../lib/catalog.js';import {collectPostgres} from '../connectors/postgres.js';
+const {values:v}=parseArgs({options:{config:{type:'string'},output:{type:'string',default:'.data/catalog.json'}}});
+try{if(!v.config)throw Error('Use --config configuração.json');const config=JSON.parse(await readBounded(v.config));const graph=await collectPostgres(config);await saveCatalog(graph,v.output);console.log(JSON.stringify({assets:graph.nodes.length,dependencies:graph.edges.length,output:v.output}));}catch(e){console.error('Coleta PostgreSQL não concluída. Revise conexão, permissões, tabelas e colunas configuradas. Nenhum catálogo parcial foi publicado.');process.exitCode=1;}

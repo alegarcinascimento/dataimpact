@@ -1,0 +1,21 @@
+{
+  "namespace": "commerce",
+  "owner": "Engenharia de dados",
+  "tables": [
+    {
+      "schema": "public",
+      "table": "orders",
+      "owner": "Dados comerciais",
+      "timestampColumn": "updated_at",
+      "minRows": 3,
+      "maxAgeMinutes": 60
+    },
+    {
+      "schema": "public",
+      "table": "orders_summary",
+      "kind": "report",
+      "owner": "Comercial",
+      "minRows": 1
+    }
+  ]
+}

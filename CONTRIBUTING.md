@@ -10,7 +10,7 @@ npm test
 npm run dev
 ```
 
-Use Node.js 22 ou superior. Não são necessárias credenciais para os testes atuais nem para a demonstração.
+Use Node.js 22 ou superior. Não são necessárias credenciais para os testes atuais nem para a demonstração. Os testes PostgreSQL usam um cliente simulado; integrações externas devem ser verificadas separadamente.
 
 ## Propor mudanças
 

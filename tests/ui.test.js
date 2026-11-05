@@ -16,3 +16,9 @@ test('interface renderiza, simula, pesquisa e alterna direção',async()=>{
  const select=doc.getElementById('direction');select.value='upstream';select.dispatchEvent(new win.Event('change'));assert(doc.getElementById('paths').textContent.includes('ERP comercial'));assert(doc.getElementById('paths').textContent.includes('CRM clientes'));
  dom.window.close();
 });
+test('interface de catálogo próprio oculta cenários fictícios e rastreia alerta',async()=>{
+ const html=await readFile(new URL('../public/index.html',import.meta.url),'utf8');const dom=new JSDOM(html,{url:'http://localhost',runScripts:'outside-only'});const win=dom.window;win.HTMLElement.prototype.scrollIntoView=()=>{};
+ const {readCatalog}=await import('../lib/catalog.js');const {detectIssues}=await import('../lib/checks.js');const g=await readCatalog('examples/catalog.json');g.nodes[0].rowCount=2;g.nodes[0].updatedAt='2026-01-01T10:00:00Z';
+ win.fetch=async()=>({ok:true,json:async()=>({...g,mode:'file',issues:detectIssues(g)})});const graphSource=(await readFile(new URL('../lib/graph.js',import.meta.url),'utf8')).replaceAll('export function','function');const source=(await readFile(new URL('../public/app.js',import.meta.url),'utf8')).replace("import {traverse} from './graph.js';",'');
+ await win.eval('(async()=>{'+graphSource+'\n'+source+'})()');const doc=win.document;assert.equal(doc.querySelectorAll('.node').length,3);assert.equal(doc.querySelector('.scenarios').hidden,true);assert(doc.getElementById('mode').textContent.includes('Catálogo próprio'));assert.equal(doc.querySelectorAll('.issue').length,2);doc.querySelector('.issue button').click();assert.equal(doc.getElementById('selected-title').textContent,'Pedidos');assert(doc.getElementById('paths').textContent.includes('Relatório comercial'));doc.getElementById('reset').click();assert.equal(doc.getElementById('selected-title').textContent,'Pedidos');dom.window.close();
+});
