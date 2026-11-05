@@ -1,124 +1,182 @@
-# DataImpact
+<p align="center">
+  <img src="docs/assets/cover.svg" alt="DataImpact — Entenda o impacto. Encontre a origem." width="100%">
+</p>
 
-**Entenda o impacto. Encontre a origem.** Uma aplicação visual de investigação de dependências de dados com Neo4j, simulação de indisponibilidade e memória de incidentes.
+<p align="center">
+  <a href="https://github.com/alegarcinascimento/dataimpact/actions/workflows/ci.yml"><img src="https://github.com/alegarcinascimento/dataimpact/actions/workflows/ci.yml/badge.svg" alt="Validação automatizada"></a>
+  <img src="https://img.shields.io/badge/Neo4j-Graph_Database-008C82?logo=neo4j&amp;logoColor=white" alt="Neo4j">
+  <img src="https://img.shields.io/badge/Node.js-22%2B-233745?logo=nodedotjs" alt="Node.js 22 ou superior">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-233745" alt="Licença MIT"></a>
+</p>
 
-## Experimente em um minuto
+<p align="center"><strong>Uma aplicação de engenharia de dados que transforma relações de dependência em caminhos de investigação.</strong></p>
 
-Abra `DataImpact_Demo.html` no navegador: o arquivo é uma demonstração autônoma, sem instalação. Use os cenários, clique nos nós, alterne a direção, arraste o fundo para mover o grafo e use os controles de zoom. A demonstração contém somente dados fictícios e busca lexical.
+<p align="center">
+  <a href="#experimente">Experimente</a> ·
+  <a href="docs/ARCHITECTURE.md">Arquitetura</a> ·
+  <a href="docs/CYPHER.md">Laboratório Cypher</a> ·
+  <a href="docs/MENTOR_REVIEW.md">Guia para mentores</a> ·
+  <a href="docs/INSTALLATION.md">Instalação e deploy</a>
+</p>
 
-Para executar o projeto com API:
+## A pergunta que move o projeto
+
+> **Se esta fonte de dados parar agora, quais processos, relatórios e equipes podem ser afetados — e por qual caminho?**
+
+Um fechamento incompleto aparece no painel executivo. A origem pode estar várias transformações antes: uma captura parcial, um cadastro atrasado ou lançamentos inconsistentes. A investigação exige percorrer dependências, localizar responsáveis e consultar o histórico.
+
+O DataImpact organiza esse contexto em um grafo navegável. Cada resultado de alcance pode ser explicado por um caminho entre ativos. O usuário explora as consequências potenciais de uma indisponibilidade e consulta incidentes anteriores para orientar a investigação.
+
+**Público:** engenharia de dados, analytics engineering, governança e responsáveis por produtos de dados. A hipótese de valor é reduzir o trabalho manual de descobrir dependências e coordenar uma investigação; esse benefício ainda não foi medido em ambiente real.
+
+## O que você encontra aqui
+
+| Capacidade | Comportamento demonstrável |
+| --- | --- |
+| Análise de impacto | Descobre consumidores diretos e indiretos de um ativo |
+| Rastreamento de origem | Percorre as dependências até as fontes |
+| Explicabilidade | Mostra um caminho mínimo em número de relações para cada ativo alcançado |
+| Simulação | Destaca o alcance potencial de uma indisponibilidade sem alterar processos |
+| Contexto operacional | Identifica as equipes responsáveis pelos ativos alcançados |
+| Memória de incidentes | Exibe ocorrência, evidência e solução histórica |
+| Busca semântica opcional | Recupera incidentes por embeddings armazenados no Neo4j |
+| Exportação | Gera JSON com ativo, direção, caminhos e identificação do modo de dados |
+
+**Conjunto demonstrativo:** 28 ativos, 28 relações `FEEDS` e 4 incidentes fictícios. No Neo4j, a carga também cria 4 relações `OCCURRED_ON`, totalizando 32 nós e 32 relações. A visualização principal apresenta somente os ativos e as 28 relações de fluxo.
+
+## Experimente
+
+### Sem instalar nada
+
+[Baixe o projeto](https://github.com/alegarcinascimento/dataimpact/archive/refs/heads/main.zip), extraia e abra **`DataImpact_Demo.html`** no navegador. O arquivo contém interface e dados; a busca é lexical. As fontes externas são opcionais.
+
+O GitHub exibe o código do HTML; para interagir, baixe e abra o arquivo. A capa acima é uma ilustração editorial, não uma captura da interface.
+
+### Com a API local
 
 ```bash
-npm install
-cp .env.example .env
+git clone https://github.com/alegarcinascimento/dataimpact.git
+cd dataimpact
+npm ci
 npm run dev
 ```
 
-Abra http://localhost:3000. Node.js 22 ou superior. `DATA_MODE=demo` dispensa banco e chaves. O único pacote de produção é o driver oficial do Neo4j. A interface usa JavaScript, HTML, CSS e SVG; nenhuma biblioteca de visualização externa é necessária.
+Abra **http://localhost:3000**. Sem `.env`, a aplicação inicia no modo demonstração. Requer Node.js 22 ou superior.
 
-## Problema e público
+### Com Neo4j
 
-Equipes de dados precisam identificar quais produtos dependem de uma fonte, quais áreas podem ser afetadas por uma falha e quais incidentes anteriores merecem investigação. O DataImpact apresenta caminhos reproduzíveis entre fontes, processos, tabelas e relatórios. Destina-se a engenheiros de dados, analistas e responsáveis por produtos de dados.
-
-## Funcionalidades
-
-- Grafo com 28 ativos, 28 relações direcionadas e quatro incidentes históricos fictícios.
-- Navegação por ativo, pesquisa de nomes, zoom, movimentação e ajuste do grafo.
-- Alcance a jusante e rastreamento a montante com um caminho por ativo.
-- Simulação sem escrita no banco; destaca dependência potencial.
-- Contagens calculadas de ativos, relatórios e equipes alcançados; excluem o ativo selecionado.
-- Três cenários: vendas incompletas, cadastro atrasado e divergência contábil.
-- Busca lexical ou semântica real, conforme configuração.
-- Evidência e solução histórica, sem atribuir causa raiz automaticamente.
-- Exportação JSON da análise com modo, direção e caminhos.
-- Layout adaptável a celular e controles de nós acessíveis por teclado.
-
-## Arquitetura
-
-Navegador → API Node.js na Vercel → Neo4j Aura. No modo demo a API usa o conjunto fictício versionado. No modo Neo4j ela lê o banco real, sem substituir erros silenciosamente por dados locais.
-
-O Neo4j é o sistema de armazenamento das relações. A API retorna o subgrafo demonstrativo e o navegador executa busca em largura para apresentar alcance e um caminho mínimo por ativo. Esta escolha permite comparar o mesmo comportamento nos dois modos. Para grandes catálogos, a evolução necessária é filtrar ativos e executar travessias no servidor/Cypher.
-
-A busca semântica gera um embedding da pergunta no servidor e consulta um índice vetorial Neo4j. Ela retorna ocorrências por similaridade e permite explorar o ativo relacionado. Esta versão não combina automaticamente score vetorial com proximidade no grafo e não inclui resposta gerada por LLM.
-
-## Conectar ao Neo4j
-
-1. Crie uma instância Neo4j Aura ou disponibilize Neo4j compatível com índices vetoriais.
-2. Copie `.env.example` para `.env` e preencha URI, usuário, senha e banco. Não envie `.env` ao GitHub.
-3. Execute `npm run seed`. A carga usa constraints e MERGE; repetir não duplica os dados. Ela adiciona somente os rótulos `DIAsset` e `DIIncident`, sem limpar o banco.
-4. Altere `DATA_MODE=neo4j` e reinicie a aplicação.
-5. Confira o indicador “Neo4j conectado”. O banco precisa conter a carga para que os cenários preparados funcionem.
-
-Modelo:
-
-```cypher
-(:DIAsset {id, label, kind, owner, description})-[:FEEDS]->(:DIAsset)
-(:DIIncident {id, title, description, resolution, evidence, tags, embedding})
-  -[:OCCURRED_ON]->(:DIAsset)
+```bash
+cp .env.example .env
+# Preencha NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD e NEO4J_DATABASE.
+npm run seed
+# Defina DATA_MODE=neo4j no .env.
+npm run dev
 ```
 
-Exemplo de impacto calculado diretamente no banco:
+O indicador **“Neo4j conectado”** identifica o modo real. Configuração, compatibilidade, embeddings e Vercel estão no [guia de instalação](docs/INSTALLATION.md).
 
-```cypher
-MATCH p=(a:DIAsset {id: $assetId})-[:FEEDS*1..20]->(b:DIAsset)
-RETURN b.id AS id, min(length(p)) AS distance
-ORDER BY distance
+## Uma demonstração com respostas verificáveis
+
+| Ponto de partida | Ativos dependentes | Relatórios alcançados | Equipes envolvidas |
+| --- | ---: | ---: | ---: |
+| `raw.vendas` | 13 | 5 | 7 |
+| `raw.clientes` | 11 | 5 | 7 |
+| `raw.lancamentos` | 7 | 3 | 4 |
+| `raw.entregas` | 3 | 1 | 2 |
+
+As contagens excluem o ativo selecionado e removem repetições. Dependência significa possibilidade de impacto; não confirma que o consumidor falhou.
+
+**Experimento de dois minutos:**
+
+1. Escolha **Fechamento incompleto**. Veja os cinco relatórios alcançados pela carga de vendas.
+2. Confira o caminho até **Fechamento executivo** e as equipes associadas.
+3. Observe que **Painel de fornecedores** permanece fora do alcance.
+4. Selecione **Fechamento executivo** e alterne para **Origem a montante**: ERP, CRM e sistema contábil participam do resultado.
+5. Pesquise **“fechamento com valores menores”** e consulte a evidência da ocorrência histórica.
+
+O [guia para mentores](docs/MENTOR_REVIEW.md) detalha resultados esperados, testes e perguntas de avaliação.
+
+## Por que um grafo?
+
+O problema central é uma rede de dependências com profundidade variável e caminhos compartilhados. Uma fonte pode alimentar vários relatórios; um relatório pode depender de várias fontes. A direção das relações determina a diferença entre investigar a origem e avaliar as consequências.
+
+O Neo4j permite persistir essas relações explicitamente e expressar a exploração de caminhos em Cypher. Uma implementação relacional com consultas recursivas também é possível. A escolha pelo grafo favorece a correspondência entre o domínio, a consulta e a explicação apresentada ao usuário; o projeto não afirma superioridade de desempenho sem benchmark.
+
+```mermaid
+flowchart TD
+  ERP["ERP comercial"] --> CAP["Captura e validação"]
+  CAP --> V["Vendas validadas"]
+  CRM["Cadastro de clientes"] --> CONS["Consolidação comercial"]
+  V --> CONS
+  CONS --> REC["Receita consolidada"]
+  REC --> FECH["Cálculo de fechamento"]
+  CONT["Lançamentos contábeis"] --> FECH
+  FECH --> REL["Fechamento executivo"]
 ```
 
-Este exemplo limita a profundidade a 20 para proteger a consulta. A interface demonstrativa percorre todos os ativos retornados, com proteção contra ciclos. A leitura da API recusa mais de 500 ativos, 2.000 relações ou 200 incidentes em vez de mostrar silenciosamente um grafo truncado.
+*Visão resumida de um trecho do domínio; algumas etapas do conjunto de dados foram agrupadas para facilitar a leitura.*
 
-## Ativar embeddings
+## Onde o Neo4j participa
 
-1. Com a carga já feita, configure `OPENAI_API_KEY` no servidor.
-2. Execute `npm run embeddings`. Este comando envia os textos fictícios dos quatro incidentes ao provedor e pode gerar cobrança pela API.
-3. Aguarde o índice `di_incident_embedding` ficar ONLINE. Verifique com `SHOW VECTOR INDEXES` no Neo4j.
-4. Reinicie a aplicação com a mesma chave e modelo. Pesquise uma descrição na seção de incidentes.
+| Componente | Papel no projeto | Implementação |
+| --- | --- | --- |
+| Property graph | Persiste ativos, incidentes e relações | [`scripts/seed.js`](scripts/seed.js) |
+| Constraints e `MERGE` | Identidade e carga repetível sem duplicação do mesmo conjunto | [`scripts/seed.js`](scripts/seed.js) |
+| Driver oficial | Consulta parametrizada, banco explícito e acesso de leitura | [`lib/db.js`](lib/db.js) |
+| Índice vetorial | Recuperação de incidentes por similaridade de embeddings | [`scripts/embeddings.js`](scripts/embeddings.js) |
+| Consulta vetorial | Recebe embedding da pergunta e retorna até quatro ocorrências | [`api/search.js`](api/search.js) |
+| Travessia visual | Calcula alcance e um caminho por ativo no navegador | [`public/graph.js`](public/graph.js) |
 
-Dimensão fixa: 1.536; modelo padrão: `text-embedding-3-small`. Se alterar o modelo, ele deve suportar a dimensão configurada e todos os vetores devem ser regenerados com o mesmo modelo. O script usa o índice vetorial e a procedure `db.index.vector.queryNodes`; verifique a compatibilidade com a versão da sua instância. A busca sem chave continua lexical e a interface informa isso. Similaridade não equivale a probabilidade de causa.
+**Decisão arquitetural explícita:** nesta versão, o Neo4j fornece o grafo e o navegador executa a travessia. O [laboratório Cypher](docs/CYPHER.md) apresenta consultas equivalentes para exploração no banco; elas não são chamadas pela interface atual. A evolução para catálogos maiores é mover a expansão para a API e devolver apenas o subgrafo solicitado.
 
-## Publicar na Vercel
+## Embeddings com propósito
 
-1. Crie um repositório GitHub chamado `dataimpact` e envie os arquivos desta pasta, incluindo `package-lock.json`.
-2. Na Vercel, use **Add New → Project** e importe esse repositório.
-3. Selecione o preset **Other**, diretório raiz do projeto e saída **public**. Não é necessário comando de build; a instalação é `npm install`.
-4. O arquivo `vercel.json` configura a saída e as funções em `/api`. Use runtime Node.js 22 ou superior.
-5. Para uma publicação inicial sem custos de embeddings, use `DATA_MODE=demo`.
-6. Para Neo4j, configure as variáveis do `.env.example` nas Environment Variables da Vercel, sem inserir segredos no código. Faça a carga localmente antes e publique novamente após alterar variáveis.
-7. Confira `/api/graph`: deve indicar `mode: neo4j` ou `mode: demo`. Valide o grafo e a busca na URL publicada.
+A busca de incidentes complementa a exploração de dependências. Com Neo4j e o provedor configurados, a pergunta é convertida em embedding e comparada aos vetores dos incidentes.
 
-A API é somente leitura e pública por padrão. Publique apenas o conjunto fictício. A chave de embeddings pode gerar consumo por visitantes: antes de ampliar a divulgação, adicione autenticação e limitação de requisições/custos; alternativamente mantenha a busca lexical sem chave. Para uso corporativo, implemente controle de acesso também ao catálogo e às evidências. Prefira credenciais de leitura na aplicação; mantenha a carga com credencial separada.
+| Configuração | Recuperação | Identificação na interface |
+| --- | --- | --- |
+| Demonstração | Correspondência de palavras | Busca por palavras |
+| Neo4j sem chave de embeddings | Correspondência de palavras sobre incidentes do banco | Busca por palavras |
+| Neo4j com chave e índice populado | Similaridade vetorial | Busca semântica por embeddings |
 
-## Roteiro de apresentação (3 minutos)
+A solução não gera respostas com LLM e não implementa GraphRAG completo. Similaridade textual e topologia são exploradas em etapas separadas; reranking por proximidade no grafo faz parte do roadmap. A [arquitetura](docs/ARCHITECTURE.md) explica o fluxo, as decisões e os limites.
 
-1. Problema: “Se esta fonte parar agora, quais decisões ficam comprometidas?”
-2. Abra “Fechamento incompleto”. O alcance das vendas chega a cinco relatórios, mas preserva fornecedores.
-3. Confira o caminho de vendas até o fechamento executivo e as equipes envolvidas.
-4. Selecione o fechamento executivo e alterne para origem: ERP, CRM e contabilidade participam do resultado.
-5. Pesquise “fechamento com valores menores”. Confira a evidência histórica e ressalte o modo de busca exibido.
-6. Exporte a análise e mostre o teste que valida o caminho esperado.
-
-## Validar
+## Qualidade e evidências
 
 ```bash
 npm test
 ```
 
-Oito testes verificam impacto por cenário, independência de suprimentos, origem do fechamento, ciclos, integridade das referências, busca lexical, API HTTP e interações da interface em DOM simulado. O layout visual ainda requer conferência em navegador; a conexão externa não foi validada sem credenciais. A pipeline GitHub Actions executa os testes. Banco, índice e provedor precisam de validação integrada na sua instância; testes unitários não comprovam conexão externa.
+A suíte contém **8 testes automatizados**, incluindo resultados esperados por cenário, proteção contra ciclos, integridade do conjunto, API HTTP e interações da interface em DOM simulado. A [pipeline do GitHub Actions](https://github.com/alegarcinascimento/dataimpact/actions/workflows/ci.yml) apresenta o resultado de cada execução.
 
-## Limitações e próximos passos
+Não há benchmark de desempenho nem avaliação de recuperação semântica publicados. A validação integrada de Neo4j, provedor de embeddings e deploy precisa ser executada na instância utilizada. Testes de DOM não comprovam o layout visual em navegador.
 
-- Linhagem cadastrada por ativo, sem extração automática de SQL, integração AWS ou linhagem por coluna.
-- Simulação qualitativa de alcance; não prevê probabilidade, duração, custo ou falha efetiva.
-- Responsáveis são propriedades dos ativos, sem diretório real de pessoas.
-- Um caminho por ativo, não todos os caminhos possíveis.
-- Quatro incidentes são suficientes para demonstrar o fluxo, mas não para avaliar qualidade semântica em produção.
-- Sem avaliação de relevância da busca semântica nesta entrega. Evolução: conjunto rotulado de consultas e comparação lexical/vetorial usando Recall@k.
-- Fontes web são opcionais; sem internet o navegador usa fontes do sistema.
+## Decisões, limites e evolução
 
-## Referências
+| Hoje | Próxima evolução proposta | Critério de conclusão |
+| --- | --- | --- |
+| Dependências cadastradas por ativo | Linhagem por coluna e ingestão de metadados | Importar um fluxo real anonimizado e validar relações |
+| Grafo pequeno carregado na interface | Expansão no servidor e orçamento de travessia | Comparar respostas e medir latência em conjuntos maiores |
+| Busca vetorial independente da topologia | Reranking de incidentes por conexão com o ativo | Comparar Recall@k e relevância com baseline lexical |
+| Equipe como propriedade | Equipes como nós quando o caso justificar | Consultar responsabilidades compartilhadas sem duplicação |
+| API pública com dados fictícios | Controle de acesso e limitação de uso | Testes de autorização e limites antes de dados internos |
 
-- https://neo4j.com/docs/javascript-manual/current/
-- https://neo4j.com/docs/cypher-manual/current/indexes/search-indexes/vector-indexes/
-- https://vercel.com/docs/functions/runtimes/node-js
+O escopo atual é um **MVP de portfólio com integração Neo4j implementada**, ainda sem validação externa documentada. Não há previsão de prejuízo, detecção automática de anomalias, causalidade confirmada ou integração AWS nesta versão.
 
-Licença MIT. Projeto de portfólio com dados inteiramente fictícios.
+## Documentação
+
+| Leitura | O que você vai encontrar |
+| --- | --- |
+| [Arquitetura e modelo](docs/ARCHITECTURE.md) | Schema, contratos, modos, decisões e escalabilidade |
+| [Laboratório Cypher](docs/CYPHER.md) | Consultas de exploração, resultados esperados e cuidados |
+| [Guia para mentores](docs/MENTOR_REVIEW.md) | Demonstração, evidências, avaliação e perguntas técnicas |
+| [Instalação e deploy](docs/INSTALLATION.md) | Execução local, Neo4j, embeddings, Vercel e diagnóstico |
+| [Contribuição](CONTRIBUTING.md) | Como propor melhorias com resultados reproduzíveis |
+
+## Referências e autoria
+
+[Neo4j JavaScript Driver](https://neo4j.com/docs/javascript-manual/current/) · [Cypher](https://neo4j.com/docs/cypher-manual/current/) · [Índices vetoriais](https://neo4j.com/docs/cypher-manual/current/indexes/search-indexes/vector-indexes/) · [Vercel Functions](https://vercel.com/docs/functions/runtimes/node-js)
+
+Desenvolvido no contexto de um portfólio de engenharia de dados, com apoio de IA na implementação e documentação. O repositório concentra código, decisões e testes para revisão e reprodução pela comunidade.
+
+[Licença MIT](LICENSE). Dados inteiramente fictícios. Projeto independente, sem vínculo ou endosso oficial da Neo4j.
