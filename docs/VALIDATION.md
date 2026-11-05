@@ -78,6 +78,10 @@ Abra uma [issue](https://github.com/alegarcinascimento/dataimpact/issues/new) co
 
 ## Validação de dados próprios
 
-A suíte completa contém 17 testes. Os novos casos cobrem rejeição de catálogos inválidos, roundtrip de arquivo, CSV real, regras nos limites, falhas de timestamp, protocolo PostgreSQL com cliente simulado, rollback, API em modo arquivo e interface com alertas e IDs próprios. A suíte não acessa um servidor PostgreSQL real.
+A suíte completa contém 24 testes. Os novos casos cobrem rejeição de catálogos inválidos, roundtrip de arquivo, CSV real, regras nos limites, falhas de timestamp, protocolo PostgreSQL com cliente simulado, rollback, API em modo arquivo e interface com alertas e IDs próprios. A suíte não acessa um servidor PostgreSQL real.
 
 Para reproduzir a jornada de ingestão, execute os comandos do [guia de conexão](DATA_SOURCES.md). O exemplo CSV deve registrar duas linhas, gerar baixo volume e atraso e permitir rastrear a origem até o relatório. O modo de catálogo próprio deve ocultar os cenários fictícios.
+
+## Ciclo e experimento de recuperação
+
+Os testes adicionais cobrem códigos residuais, métricas de ranking, contexto topológico, histórico de abertura/resolução, referências do conjunto sintético e execução do HTML autônomo com o ciclo saudável/falha/recuperação sem chamadas de dados à rede. O teste com vetores numéricos artificiais verifica os seis métodos, sem produzir evidência de qualidade semântica. Veja [metodologia](RETRIEVAL_EXPERIMENT.md).

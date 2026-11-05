@@ -11,7 +11,9 @@
     "embeddings": "node --env-file-if-exists=.env scripts/embeddings.js",
     "import:catalog": "node --env-file-if-exists=.env scripts/import.js",
     "collect:postgres": "node --env-file-if-exists=.env scripts/connect-postgres.js",
-    "profile:csv": "node --env-file-if-exists=.env scripts/profile-csv.js"
+    "profile:csv": "node --env-file-if-exists=.env scripts/profile-csv.js",
+    "evaluate": "node --env-file-if-exists=.env scripts/evaluate.js",
+    "monitor": "node --env-file-if-exists=.env scripts/monitor.js"
   },
   "dependencies": {
     "csv-parse": "^7.0.3",

@@ -19,6 +19,14 @@
   <a href="docs/INSTALLATION.md">Instalação e configuração</a>
 </p>
 
+## Demonstração em três passos
+
+1. Abra **DataImpact_Demo.html** e clique em **Base saudável → Introduzir falha → Confirmar recuperação**.
+2. Rastreie os relatórios afetados e confira o histórico de abertura e resolução dos alertas.
+3. No **Laboratório de recuperação**, compare ocorrências recuperadas por palavras com a mesma busca contextualizada pelo grafo.
+
+O laboratório usa 24 incidentes e oito perguntas sintéticas. O [relatório reproduzível](docs/RETRIEVAL_EXPERIMENT.md) apresenta o baseline executado e o código experimental de Semantic IDs. Os métodos vetoriais permanecem marcados como não avaliados até uma execução com embeddings.
+
 ## A pergunta que move o projeto
 
 > **Se esta fonte de dados parar agora, quais processos, relatórios e equipes podem ser afetados — e por qual caminho?**
@@ -40,6 +48,8 @@ O DataImpact organiza esse contexto em um grafo navegável. Cada resultado de al
 | Contexto operacional | Identifica as equipes responsáveis pelos ativos alcançados |
 | Verificações de dados | Detecta violações de volume e atualização a partir de métricas coletadas |
 | Conectores | Importa JSON/CSV, mede arquivos CSV e coleta objetos PostgreSQL selecionados |
+| Histórico de verificações | Registra abertura e resolução de violações em arquivo ou no Neo4j |
+| Laboratório de recuperação | Compara métodos com gabarito, métricas e condições de execução explícitas |
 | Memória de incidentes | Exibe ocorrência, evidência e solução histórica |
 | Busca semântica opcional | Recupera incidentes por embeddings armazenados no Neo4j |
 | Exportação | Gera JSON com ativo, direção, caminhos e identificação do modo de dados |
@@ -167,9 +177,9 @@ A solução não gera respostas com LLM e não implementa GraphRAG completo. Sim
 npm test
 ```
 
-A suíte contém **17 testes automatizados**, incluindo cenários, ciclos, validação de catálogo, coleta CSV, regras, protocolo PostgreSQL simulado, API com dados próprios e interações da interface em DOM simulado. A [pipeline do GitHub Actions](https://github.com/alegarcinascimento/dataimpact/actions/workflows/ci.yml) apresenta o resultado de cada execução.
+A suíte contém **24 testes automatizados**, incluindo cenários, ciclos, validação de catálogo, coleta CSV, regras, protocolo PostgreSQL simulado, API com dados próprios histórico, quantização residual e interações da interface em DOM simulado. A [pipeline do GitHub Actions](https://github.com/alegarcinascimento/dataimpact/actions/workflows/ci.yml) apresenta o resultado de cada execução.
 
-Não há benchmark de desempenho nem avaliação de recuperação semântica publicados. A validação integrada de PostgreSQL, Neo4j e provedor de embeddings precisa ser executada na instância utilizada. Testes de DOM não comprovam o layout visual em navegador.
+Há um experimento de recuperação sintético publicado; os resultados vetoriais e de Semantic IDs ainda dependem de execução com embeddings. Não há benchmark de desempenho em produção. A validação integrada de PostgreSQL, Neo4j e provedor de embeddings precisa ser executada na instância utilizada. Testes de DOM não comprovam o layout visual em navegador.
 
 ## Decisões, limites e evolução
 
@@ -192,7 +202,8 @@ O escopo atual é um **MVP de portfólio com integração Neo4j implementada**, 
 | [Laboratório Cypher](docs/CYPHER.md) | Consultas de exploração, resultados esperados e cuidados |
 | [Validação técnica](docs/VALIDATION.md) | Cenários de teste, evidências e critérios de validação |
 | [Instalação e configuração](docs/INSTALLATION.md) | Execução local, Neo4j, embeddings e diagnóstico |
-| [Extensão geoespacial proposta](docs/GEOAI.md) | Caso de uso, arquitetura e validação necessária para GeoAI |
+| [Monitoramento e histórico](docs/MONITORING.md) | Execuções, transições e persistência dos achados |
+| [Experimento de recuperação](docs/RETRIEVAL_EXPERIMENT.md) | Baselines, contexto do grafo, embeddings e códigos residuais |
 | [Padrão visual](docs/VISUAL_STANDARDS.md) | Capturas, diagramas, fotografias e revisão técnica |
 | [Contribuição](CONTRIBUTING.md) | Como propor melhorias com resultados reproduzíveis |
 

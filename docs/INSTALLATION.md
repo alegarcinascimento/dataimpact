@@ -103,7 +103,7 @@ Confirme `mode: semantic` na resposta de `/api/search?q=fechamento%20menores`. S
 npm test
 ```
 
-A suíte contém 17 testes para cenários, ciclos, integridade, busca lexical, API HTTP e interações em DOM simulado. Confira também os [critérios funcionais](VALIDATION.md) e o [laboratório Cypher](CYPHER.md).
+A suíte contém 24 testes para cenários, ciclos, integridade, busca lexical, API HTTP e interações em DOM simulado. Confira também os [critérios funcionais](VALIDATION.md) e o [laboratório Cypher](CYPHER.md).
 
 Os testes automatizados atuais não comprovam conexão externa com Neo4j ou provedor de embeddings. Valide essas integrações no ambiente utilizado. O layout visual requer revisão em navegador.
 
@@ -164,3 +164,7 @@ O servidor não implementa autenticação, autorização ou rate limit. Antes de
 
 - [Neo4j JavaScript Driver](https://neo4j.com/docs/javascript-manual/current/)
 - [Índices vetoriais](https://neo4j.com/docs/cypher-manual/current/indexes/search-indexes/vector-indexes/)
+
+## Registrar execuções e avaliar recuperação
+
+Depois da coleta e importação, execute `npm run monitor` para registrar a verificação no arquivo ou no Neo4j, conforme o modo configurado. Veja [histórico](MONITORING.md). Para reproduzir o experimento sintético, execute `npm run evaluate`; veja [metodologia e embeddings](RETRIEVAL_EXPERIMENT.md).

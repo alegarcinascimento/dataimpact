@@ -123,7 +123,7 @@ Defina `DATA_MODE=neo4j` e reinicie a aplicação. Ativos, regras e métricas s�
 
 A operação usa upsert e não apaga ativos ou relações ausentes da importação. Use um banco dedicado para separar seu catálogo do seed fictício e revise mudanças de linhagem que exijam remoção. Para os ativos enviados, os campos de métricas e regras são substituídos pelo novo snapshot; campos omitidos dessas categorias são removidos, evitando manter medições antigas como atuais.
 
-Se cadastrar incidentes próprios no Neo4j, `npm run embeddings` gera vetores a partir dos incidentes existentes nesse banco, limitado a 200 ocorrências. A coleta de métricas não cria incidentes históricos ou soluções automaticamente.
+Se cadastrar incidentes próprios no Neo4j, `npm run embeddings` gera vetores a partir dos incidentes existentes nesse banco, limitado a 200 ocorrências. A coleta de métricas não cria incidentes históricos ou soluções automaticamente. Para registrar verificações, execute `npm run monitor`; veja o [histórico](MONITORING.md).
 
 ## Regras e interpretação
 

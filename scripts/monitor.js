@@ -1,0 +1,3 @@
+import {appendNeo4jRun} from '../lib/neo4j-runs.js';
+import {loadSource} from '../lib/source.js';import {appendRun} from '../lib/runs.js';import {close} from '../lib/db.js';
+try{const graph=await loadSource();if(graph.mode==='demo')throw Error('Configure DATA_MODE=file ou neo4j para registrar execuções operacionais');const run=graph.mode==='neo4j'?await appendNeo4jRun(graph):await appendRun(graph);console.log(JSON.stringify({id:run.id,at:run.at,issues:run.issues.length,opened:run.opened,resolved:run.resolved},null,2));}catch(e){console.error('Monitoramento não concluído: '+e.message);process.exitCode=1;}finally{await close();}

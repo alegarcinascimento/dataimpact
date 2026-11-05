@@ -105,7 +105,7 @@ O driver é reutilizado, com pool máximo de 5 conexões, timeout de conexão de
 
 A API não implementa autenticação, autorização por ativo ou rate limit. O conjunto público deve permanecer fictício. Uma chave de embeddings em uma API pública permite consumo pelo público; não publique essa modalidade amplamente antes de adicionar controles de uso e custo.
 
-Não há logs de auditoria, histórico de alterações de linhagem nem métricas de operação nesta versão. Não foi realizado teste integrado com instância Neo4j ou provedor de embeddings no ambiente de desenvolvimento desta entrega.
+Não há histórico de alterações de linhagem ou telemetria de produção. O histórico de verificações é descrito no [guia de monitoramento](MONITORING.md). Não foi realizado teste integrado com instância Neo4j ou provedor de embeddings no ambiente de desenvolvimento desta entrega.
 
 ## Ingestão e verificações
 
@@ -113,4 +113,8 @@ O [guia de dados próprios](DATA_SOURCES.md) descreve os contratos. `lib/catalog
 
 O modo arquivo lê um snapshot local, e o importador Neo4j faz upsert transacional. A coleta PostgreSQL ocorre em um processo administrativo separado, com uma transação somente leitura; arquivos de dados são perfilados localmente. Não há endpoint público de importação. A descoberta PostgreSQL cobre relações de views entre objetos selecionados; não cria linhagem de ferramentas externas.
 
-Alertas são calculados no carregamento e não são persistidos como incidentes históricos. Não há agendamento nem SLA de idade da coleta. O timestamp de observação acompanha a métrica; os detalhes operacionais e limites estão documentados no guia de conexão.
+Alertas são calculados no carregamento. O comando `npm run monitor` também registra execuções e achados em arquivo ou como `DIRun`/`DIFinding` no Neo4j, mantendo a separação em relação a incidentes históricos com solução confirmada. Não há agendamento nem SLA de idade da coleta. O timestamp de observação acompanha a métrica; os detalhes operacionais e limites estão documentados no guia de conexão.
+
+## Experimento de recuperação
+
+O laboratório demonstrativo é separado da busca operacional `/api/search`. Ele usa um conjunto sintético versionado e um ranking de contexto por conectividade. A implementação de quantização residual é experimental e não contém um modelo generativo. Consulte a [metodologia](RETRIEVAL_EXPERIMENT.md).

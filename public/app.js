@@ -70,3 +70,24 @@ function showIssues(){
  if(!items.length){const p=document.createElement('p');p.className='note';p.textContent='Ausência de alerta não comprova qualidade: configure minRows ou maxAgeMinutes e colete métricas. Atualize a página após cada nova coleta.';box.append(p);return;}
  for(const issue of items){const article=document.createElement('article');article.className='issue';const title=document.createElement('strong');title.textContent=name(issue.asset);const desc=document.createElement('p');desc.textContent=issue.detail;const note=document.createElement('small');note.textContent=`${issue.affected.length} consumidores e ${issue.reports.length} relatórios potencialmente afetados. Coleta: ${issue.observedAt||'não informada'}`;const button=document.createElement('button');button.className='quiet';button.textContent='Rastrear dependências →';button.onclick=()=>{direction='downstream';$('direction').value=direction;select(issue.asset);document.querySelector('.workspace').scrollIntoView({behavior:'smooth'});};article.append(title,desc,note,button);box.append(article);}
 }
+
+let playbackHistory=[];
+function showRunHistory(runs){const box=$('run-history');if(!box)return;box.replaceChildren();for(const run of [...runs].reverse().slice(0,6)){const item=document.createElement('div');item.className='run-entry';item.textContent=new Date(run.at).toLocaleString('pt-BR')+' · '+(run.phase||'Execução')+' · '+run.issues.length+' alertas · '+run.resolved.length+' resolvidos';box.append(item);}}
+function initializePlayback(){
+ if(graph.mode!=='demo'){
+  $('playback').querySelector('h2').textContent='Histórico de verificações';$('playback').querySelector('.note').textContent='Execuções registradas pelo comando administrativo npm run monitor. Atualize a página após a coleta.';$('playback').querySelector('.playback-actions').hidden=true;
+  get('/api/history').then(data=>showRunHistory(data.runs||[])).catch(e=>error(e.message));return;
+ }
+ try{playbackHistory=JSON.parse(localStorage.getItem('dataimpact-demo-runs')||'[]');if(!Array.isArray(playbackHistory))playbackHistory=[];playbackHistory=playbackHistory.filter(r=>r&&typeof r.at==='string'&&Array.isArray(r.issues)&&Array.isArray(r.resolved)).slice(-30);}catch{playbackHistory=[];}
+ showRunHistory(playbackHistory);
+ document.querySelectorAll('[data-phase]').forEach(button=>button.onclick=async()=>{
+  const now=new Date(),phase=button.dataset.phase;const broken=phase==='failure';
+  graph.nodes=graph.nodes.map(n=>n.id==='rawSales'?{...n,rowCount:broken?40:120,minRows:100,observedAt:now.toISOString(),updatedAt:new Date(now-(broken?120:5)*60000).toISOString(),maxAgeMinutes:60}:n);
+  const {detectIssues:checkSnapshot}=await import('/checks.js');graph.issues=checkSnapshot(graph,now);
+  const previous=new Set(playbackHistory.at(-1)?.issues.map(i=>i.id)||[]),current=new Set(graph.issues.map(i=>i.id));
+  playbackHistory.push({at:now.toISOString(),phase,issues:graph.issues.map(i=>({id:i.id,asset:i.asset,rule:i.rule})),resolved:[...previous].filter(id=>!current.has(id))});playbackHistory=playbackHistory.slice(-30);
+  try{localStorage.setItem('dataimpact-demo-runs',JSON.stringify(playbackHistory));}catch{}
+  direction='downstream';$('direction').value=direction;select('rawSales');showIssues();showRunHistory(playbackHistory);
+ });
+}
+if(graph){initializePlayback();if(graph.mode==='demo')import('/lab.js').then(m=>m.initializeLab(graph)).catch(()=>{$('semantic-status').textContent='Laboratório indisponível neste ambiente.';});else $('retrieval-lab').hidden=true;}

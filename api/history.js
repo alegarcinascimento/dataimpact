@@ -1,0 +1,3 @@
+import {readNeo4jRuns} from '../lib/neo4j-runs.js';
+import {readRuns} from '../lib/runs.js';
+export default async function handler(req,res){res.setHeader('Cache-Control','no-store');if(req.method!=='GET')return res.status(405).json({error:'Método não permitido'});try{if(!['file','neo4j'].includes(process.env.DATA_MODE))return res.status(200).json({runs:[],mode:'demo'});const runs=process.env.DATA_MODE==='neo4j'?await readNeo4jRuns():await readRuns();res.status(200).json({runs:runs.slice(-30),retained:runs.length,mode:process.env.DATA_MODE});}catch{res.status(503).json({error:'Não foi possível consultar o histórico configurado'});}}

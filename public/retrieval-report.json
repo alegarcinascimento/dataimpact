@@ -1,0 +1,233 @@
+{
+  "dataset": "synthetic-v1",
+  "datasetHash": "305ad83e121034ce17a0afddbc84d45bd87ce0a0ad2229cd1792e14655a4e635",
+  "synthetic": true,
+  "incidents": 24,
+  "queries": 8,
+  "k": 3,
+  "generatedAt": "2026-11-05T14:26:27.214Z",
+  "environment": {
+    "node": "v24.22.1",
+    "platform": "linux"
+  },
+  "methodology": "Single warm-process pass. Ranking CPU only: excludes embedding generation, network, database, training and UI. No production speed or accuracy claim.",
+  "semanticStatus": "not_evaluated_no_embeddings",
+  "embeddingModel": null,
+  "vectorSource": null,
+  "providerUsage": null,
+  "embeddingMs": null,
+  "results": [
+    {
+      "method": "lexical",
+      "recallAt3": 0.8541666666666666,
+      "precisionAt3": 0.4166666666666667,
+      "ndcgAt3": 0.8752683384920503,
+      "rankingP50Ms": 0.21850999999999487,
+      "rankingP95Ms": 0.9882460000000037,
+      "details": [
+        {
+          "query": "Q01",
+          "top": [
+            "S01",
+            "S24",
+            "S17"
+          ],
+          "recall": 0.3333333333333333,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.46927872602275644,
+          "rankingMs": 0.5882199999999926
+        },
+        {
+          "query": "Q02",
+          "top": [
+            "S05",
+            "S06",
+            "S07"
+          ],
+          "recall": 1,
+          "precision": 0.6666666666666666,
+          "ndcg": 1,
+          "rankingMs": 0.21850999999999487
+        },
+        {
+          "query": "Q03",
+          "top": [
+            "S09",
+            "S10",
+            "S12"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.17834999999999468
+        },
+        {
+          "query": "Q04",
+          "top": [
+            "S14",
+            "S02",
+            "S13"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.9882460000000037
+        },
+        {
+          "query": "Q05",
+          "top": [
+            "S13",
+            "S16",
+            "S23"
+          ],
+          "recall": 1,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.9197207891481876,
+          "rankingMs": 0.11726700000001244
+        },
+        {
+          "query": "Q06",
+          "top": [
+            "S08",
+            "S03",
+            "S05"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.43778199999999856
+        },
+        {
+          "query": "Q07",
+          "top": [
+            "S17",
+            "S01",
+            "S04"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.11915000000000475
+        },
+        {
+          "query": "Q08",
+          "top": [
+            "S18",
+            "S05",
+            "S13"
+          ],
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.6131471927654584,
+          "rankingMs": 0.1642790000000076
+        }
+      ]
+    },
+    {
+      "method": "lexical_graph",
+      "recallAt3": 0.9583333333333333,
+      "precisionAt3": 0.5,
+      "ndcgAt3": 0.9429199584163137,
+      "rankingP50Ms": 0.253263000000004,
+      "rankingP95Ms": 8.059346000000005,
+      "details": [
+        {
+          "query": "Q01",
+          "top": [
+            "S01",
+            "S17",
+            "S04"
+          ],
+          "recall": 0.6666666666666666,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.7039180890341347,
+          "rankingMs": 8.059346000000005
+        },
+        {
+          "query": "Q02",
+          "top": [
+            "S05",
+            "S06",
+            "S07"
+          ],
+          "recall": 1,
+          "precision": 0.6666666666666666,
+          "ndcg": 1,
+          "rankingMs": 0.40018600000000504
+        },
+        {
+          "query": "Q03",
+          "top": [
+            "S09",
+            "S10",
+            "S12"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.18367800000000045
+        },
+        {
+          "query": "Q04",
+          "top": [
+            "S14",
+            "S13",
+            "S15"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.1892660000000035
+        },
+        {
+          "query": "Q05",
+          "top": [
+            "S13",
+            "S16",
+            "S23"
+          ],
+          "recall": 1,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.9197207891481876,
+          "rankingMs": 0.7257390000000044
+        },
+        {
+          "query": "Q06",
+          "top": [
+            "S08",
+            "S03",
+            "S05"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.1469419999999957
+        },
+        {
+          "query": "Q07",
+          "top": [
+            "S17",
+            "S01",
+            "S04"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.253263000000004
+        },
+        {
+          "query": "Q08",
+          "top": [
+            "S18",
+            "S05",
+            "S19"
+          ],
+          "recall": 1,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.9197207891481876,
+          "rankingMs": 0.1579190000000068
+        }
+      ]
+    }
+  ]
+}

@@ -3,6 +3,8 @@
 .asset-results{padding:12px 22px;max-height:180px;overflow:auto;border-top:1px solid var(--line);display:flex;gap:6px;flex-wrap:wrap}.asset-results[hidden]{display:none}.asset-results button{font-size:11px;border:1px solid var(--line);padding:7px 10px;border-radius:5px;background:#f6faf9;color:#32645b}
 
 .monitoring{margin-top:22px}.issue{padding:16px;border:1px solid #e6ccb3;border-radius:8px;background:#fffaf4;margin-top:12px}.issue strong{font-size:13px}.issue p{margin:8px 0;font-size:12px}.issue small{display:block;color:#7d8587;font-size:11px;margin-bottom:12px}.scenarios[hidden]{display:none}
+
+.playback,.retrieval-lab{margin-top:22px}.playback-actions{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}.playback-actions[hidden]{display:none}.run-entry{padding:10px 0;border-top:1px solid var(--line);font-size:11px;color:#637b85}.lab-columns{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:22px 0}.lab-result{border:1px solid var(--line);border-radius:8px;padding:13px;margin:10px 0}.lab-result strong{font-size:12px}.lab-result small{display:block;color:#347f72;font-size:10px;margin-top:7px}.lab-result p{font-size:11px}.retrieval-lab select{display:block;max-width:100%;width:100%;margin-top:10px}.retrieval-lab label{font-size:11px}.retrieval-lab table{border-collapse:collapse;width:100%;font-size:12px}.retrieval-lab td,.retrieval-lab th{text-align:left;border-bottom:1px solid var(--line);padding:12px}.retrieval-lab[hidden]{display:none}@media(max-width:800px){.lab-columns{grid-template-columns:1fr}}
 </style></head><body>
 <aside class="rail"><a class="brand" href="/" aria-label="DataImpact">d<span>i</span></a><div class="rail-icon active" title="Explorador">◈</div><div class="rail-bottom">DI</div></aside>
 <div class="shell"><header><div class="wordmark">DataImpact <span>/ Workspace</span></div><div class="header-right"><span id="mode" class="badge">Conectando…</span><button id="help" class="quiet">Como explorar ↗</button></div></header>
@@ -12,9 +14,10 @@
 <div class="toolbar"><label class="search-wrap">⌕ <input id="asset-search" aria-label="Buscar ativo" placeholder="Encontrar um ativo…"></label><select id="direction" aria-label="Direção da investigação"><option value="downstream">Impacto a jusante</option><option value="upstream">Origem a montante</option></select><button id="reset" class="quiet">Restaurar</button></div>
 <div id="asset-results" class="asset-results" hidden></div><div class="graph-area"><div class="graph-note"><span id="graph-status">EXPLORANDO DEPENDÊNCIAS</span><small id="graph-subtitle">Selecione um ativo para começar</small></div><svg id="graph" viewBox="0 0 1000 570" aria-label="Grafo interativo de dependências" role="group"></svg><div class="graph-controls"><button id="zoom-out" aria-label="Diminuir zoom">−</button><button id="zoom-in" aria-label="Aumentar zoom">+</button><button id="fit" aria-label="Ajustar grafo">⤢</button></div><div class="legend"><span class="source">Fonte</span><span class="job">Processo</span><span class="table">Tabela</span><span class="report">Relatório</span></div></div><div class="graph-footer"><span>→ As setas indicam o fluxo dos dados</span><span id="edge-count"></span></div></section>
 <aside class="details"><div class="detail-top"><span class="eyebrow">ATIVO SELECIONADO</span><span id="kind" class="badge"></span></div><h2 id="selected-title">Carregando…</h2><p id="description"></p><div class="owner"><span>Equipe responsável</span><strong id="owner"></strong></div><button id="simulate" class="primary">⚡ Simular indisponibilidade</button><p id="simulation-note" class="note">Simulação hipotética. Nenhum processo será alterado.</p><div class="divider"></div><h3 id="paths-title">Caminhos de impacto</h3><div id="paths"></div></aside></div>
+<section class="card playback" id="playback"><div class="eyebrow">CICLO DE INVESTIGAÇÃO</div><h2>Da detecção à recuperação</h2><p class="note">Cenário fictício executado no navegador. Ações abaixo alteram apenas a demonstração.</p><div class="playback-actions"><button class="quiet" data-phase="healthy">1. Base saudável</button><button class="quiet" data-phase="failure">2. Introduzir falha</button><button class="primary" data-phase="recovered">3. Confirmar recuperação</button></div><div id="run-history" aria-live="polite"></div></section>
 <section class="card monitoring"><div class="eyebrow">VERIFICAÇÕES DO CATÁLOGO</div><h2 id="issue-summary">Verificando regras…</h2><p class="note">Volume e atualização avaliados por regras explícitas. O alcance indica dependência potencial, sem confirmar causa raiz.</p><div id="issues" aria-live="polite"></div></section><div class="bottom-grid"><section class="scenarios card"><div class="eyebrow">EXPLORE UM CENÁRIO</div><h2>Uma falha. Diferentes consequências.</h2><p>Escolha um ponto de partida para investigar.</p><div class="scenario-buttons"><button data-scenario="rawSales"><b>01</b><span>Fechamento incompleto<small>Investigar a carga de vendas →</small></span></button><button data-scenario="rawClients"><b>02</b><span>Clientes desatualizados<small>Rastrear a consolidação →</small></span></button><button data-scenario="rawLedger"><b>03</b><span>Margem divergente<small>Explorar lançamentos contábeis →</small></span></button></div></section>
 <section class="card incidents"><div class="eyebrow">MEMÓRIA DE INCIDENTES</div><h2>Isso já aconteceu antes?</h2><form id="incident-form"><input id="incident-query" required minlength="3" maxlength="300" placeholder="Ex.: fechamento com valores menores" aria-label="Descrever problema"><button class="primary">Investigar ↗</button></form><p class="note" id="search-mode">Demonstração: busca por palavras. Busca semântica disponível com embeddings configurados.</p><div id="incidents" aria-live="polite"></div></section></div>
-<footer><span>DataImpact <b>•</b> Graph intelligence for data teams</span><span>Dados fictícios · Projeto de portfólio · Neo4j</span></footer><div id="error" role="alert" hidden></div>
+<section class="card retrieval-lab" id="retrieval-lab"><div class="eyebrow">LABORATÓRIO DE RECUPERAÇÃO</div><h2>Ocorrências parecidas. Contextos diferentes.</h2><p>Compare uma busca por palavras com a mesma busca contextualizada pelo grafo.</p><label for="lab-query">Consulta de avaliação</label><select id="lab-query"></select><p class="note" id="lab-context"></p><div id="lab-results" class="lab-columns"></div><h3>Resultados no conjunto sintético</h3><div id="benchmark-results"></div><p class="note">24 incidentes fictícios, 8 perguntas e gabarito manual. Valores descritivos, sem validade externa. Métricas de tempo no JSON medem somente o ranking local, sem rede ou geração de embeddings.</p><p class="note" id="semantic-status">Carregando relatório…</p></section><footer><span>DataImpact <b>•</b> Graph intelligence for data teams</span><span>Dados fictícios · Projeto de portfólio · Neo4j</span></footer><div id="error" role="alert" hidden></div>
 <dialog id="guide"><button id="close-help" class="quiet">Fechar ×</button><div class="eyebrow">GUIA RÁPIDO</div><h2>Seu próximo passo está conectado.</h2><ol><li>Escolha um dos três cenários.</li><li>Clique nos ativos para ver dependências e responsáveis.</li><li>Simule a indisponibilidade para destacar o alcance potencial.</li><li>Alterne para “Origem a montante” para rastrear as fontes.</li><li>Busque um incidente e confira as evidências históricas.</li></ol><p>O alcance é calculado a partir das dependências cadastradas. Não confirma falha real nem causa raiz. O grafo não contém linhagem por coluna nesta versão.</p></dialog></main></div><script type="module">const demo = {
   "nodes": [
     {
@@ -425,6 +428,265 @@ function detectIssues(graph,now=new Date()){
 }
 
 
+function contextualize(items,graph,asset){
+ const upstream=traverse(graph,asset,'upstream'),downstream=traverse(graph,asset),connected=new Set([...upstream.ids,...downstream.ids]);
+ return items.map(i=>({...i,connected:connected.has(i.asset),score:i.score+(connected.has(i.asset)?1:0)})).sort((a,b)=>Number(b.connected)-Number(a.connected)||b.score-a.score||a.id.localeCompare(b.id));
+}
+function retrieveLexical(incidents,query,graph,asset,useGraph=false){const items=lexicalSearch(incidents,query);return useGraph?contextualize(items,graph,asset):items;}
+function measureRanking(items,relevant,k=3){const actual=new Set(relevant),top=items.slice(0,k);const hits=top.filter(i=>actual.has(i.id)).length;const dcg=top.reduce((s,i,index)=>s+(actual.has(i.id)?1/Math.log2(index+2):0),0);const ideal=Array.from({length:Math.min(k,actual.size)},(_,i)=>1/Math.log2(i+2)).reduce((a,b)=>a+b,0);return {recall:actual.size?hits/actual.size:0,precision:hits/k,ndcg:ideal?dcg/ideal:0};}
+
+const retrievalDataset = {"version": "synthetic-v1", "synthetic": true, "notes": "Conjunto pequeno e manual; sem validade externa. IDs e rótulos de relevância não entram nos embeddings.", "incidents": [{"id": "S01", "title": "Carga de pedidos incompleta", "description": "Fechamento com valores menores porque a captura recebeu apenas parte dos pedidos.", "asset": "rawSales", "resolution": "Conferir contagens na origem, localizar a partição ausente e reexecutar somente a carga afetada.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["fechamento", "carga", "pedidos", "parcial"]}, {"id": "S02", "title": "Arquivo de vendas não recebido", "description": "Volume de vendas abaixo do mínimo após ausência de um arquivo no processamento.", "asset": "rawSales", "resolution": "Conferir os arquivos esperados e solicitar a entrega faltante antes de recalcular consumidores.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["volume", "vendas", "arquivo", "ausente"]}, {"id": "S03", "title": "Duplicidade no lote de vendas", "description": "Receita acima do esperado após importar os mesmos pedidos duas vezes.", "asset": "rawSales", "resolution": "Comparar chaves de pedidos, confirmar duplicidade e corrigir o lote com aprovação.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["receita", "duplicidade", "pedidos"]}, {"id": "S04", "title": "Falha na validação comercial", "description": "Registros rejeitados na validação deixaram vendas fora do fechamento.", "asset": "quality", "resolution": "Inspecionar regras e registros rejeitados antes de reprocessar a camada validada.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["validacao", "rejeitados", "fechamento"]}, {"id": "S05", "title": "Cadastro de clientes atrasado", "description": "Segmentos ausentes no painel por atualização atrasada do cadastro.", "asset": "rawClients", "resolution": "Conferir o horário da carga do CRM e atualizar o cadastro antes da consolidação.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["clientes", "cadastro", "atraso"]}, {"id": "S06", "title": "Clientes sem chave de relacionamento", "description": "Pedidos sem segmento porque os identificadores dos clientes não estavam preenchidos.", "asset": "rawClients", "resolution": "Validar a presença das chaves na origem e revisar o relacionamento da consolidação.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["clientes", "chave", "segmento"]}, {"id": "S07", "title": "Categorias inconsistentes no CRM", "description": "Classificação de clientes divergente após mudança de domínio no CRM.", "asset": "crm", "resolution": "Comparar as categorias recebidas com o contrato e revisar o mapeamento.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["crm", "categoria", "classificacao"]}, {"id": "S08", "title": "Erro de junção comercial", "description": "Queda na receita por descarte de pedidos durante a junção com clientes.", "asset": "join", "resolution": "Verificar a cardinalidade da junção e as chaves sem correspondência.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["receita", "juncao", "clientes"]}, {"id": "S09", "title": "Lançamentos de custo duplicados", "description": "Margem menor e resultado divergente após duplicar lançamentos contábeis.", "asset": "rawLedger", "resolution": "Conferir chaves e totais contábeis antes de remover duplicidades e recalcular.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["margem", "custo", "duplicado"]}, {"id": "S10", "title": "Custo contábil não recebido", "description": "Margem acima do esperado por ausência de lançamentos de custo.", "asset": "rawLedger", "resolution": "Conferir os lotes contábeis esperados e completar a ingestão.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["margem", "custo", "ausente"]}, {"id": "S11", "title": "Atualização contábil atrasada", "description": "Fechamento mensal usando lançamentos de uma data anterior.", "asset": "captureLedger", "resolution": "Conferir partições e a execução da captura contábil.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["fechamento", "contabil", "atraso"]}, {"id": "S12", "title": "Moeda inconsistente no custo", "description": "Margem divergente após mistura de valores com moedas diferentes.", "asset": "marginJob", "resolution": "Conferir moeda e taxa de conversão aplicadas no cálculo da margem.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["margem", "moeda", "custo"]}, {"id": "S13", "title": "Entregas de fornecedores desatualizadas", "description": "Painel de prazo sem atualização após atraso na captura de entregas.", "asset": "rawVendor", "resolution": "Restabelecer a captura de entregas e conferir o último timestamp recebido.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["entregas", "atraso", "prazo"]}, {"id": "S14", "title": "Arquivo de entregas incompleto", "description": "Volume abaixo do mínimo no arquivo de fornecedores recebidos.", "asset": "rawVendor", "resolution": "Comparar a quantidade de entregas com a origem e repor o arquivo faltante.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["volume", "arquivo", "fornecedor"]}, {"id": "S15", "title": "Duplicidade de entregas", "description": "Quantidade entregue inflada após duplicação de registros do fornecedor.", "asset": "rawVendor", "resolution": "Revisar a chave da entrega e confirmar quais registros são duplicados.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["entrega", "duplicidade", "fornecedor"]}, {"id": "S16", "title": "Calendário de entregas incorreto", "description": "Prazo de fornecedor divergente por cálculo incorreto dos dias úteis.", "asset": "deliveryJob", "resolution": "Conferir o calendário e reproduzir o cálculo de prazo.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["prazo", "fornecedor", "calendario"]}, {"id": "S17", "title": "Partição incorreta no fechamento", "description": "Relatório mensal com valores de outra competência.", "asset": "closing", "resolution": "Conferir a competência escolhida e as partições usadas no fechamento.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["fechamento", "particao", "competencia"]}, {"id": "S18", "title": "Receita consolidada defasada", "description": "Painel comercial com dados antigos apesar de a origem estar atualizada.", "asset": "revenue", "resolution": "Conferir o timestamp do mart e o resultado da consolidação.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["receita", "painel", "atraso"]}, {"id": "S19", "title": "Cache do painel desatualizado", "description": "Relatório mostra números antigos mesmo com a tabela de fechamento atualizada.", "asset": "boardReport", "resolution": "Comparar o timestamp da tabela com a atualização do painel.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["painel", "fechamento", "cache"]}, {"id": "S20", "title": "Filtro de período do painel errado", "description": "Indicadores comerciais divergem por uso de um filtro temporal incorreto.", "asset": "salesReport", "resolution": "Conferir o período aplicado no painel e comparar com a consulta base.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["painel", "periodo", "filtro"]}, {"id": "S21", "title": "Erro na projeção comercial", "description": "Previsão de receita distorcida por janela de histórico incompleta.", "asset": "forecast", "resolution": "Conferir a janela histórica e a completude dos períodos de entrada.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["previsao", "receita", "historico"]}, {"id": "S22", "title": "Conciliação com chave inválida", "description": "Diferença entre fechamento e contabilidade por chave de conciliação ausente.", "asset": "audit", "resolution": "Conferir as chaves usadas no confronto e os lançamentos não conciliados.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["conciliacao", "contabilidade", "chave"]}, {"id": "S23", "title": "Lote de fornecedores fora de ordem", "description": "Prazo de entregas usa lote anterior após ingestão fora de sequência.", "asset": "captureVendor", "resolution": "Conferir sequência dos lotes e restabelecer a ordem da captura.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["prazo", "entregas", "lote"]}, {"id": "S24", "title": "Carga parcial de entregas no fechamento operacional", "description": "Fechamento de entregas com valores menores porque faltaram registros do fornecedor.", "asset": "rawVendor", "resolution": "Conferir a completude dos registros do fornecedor e recalcular seu painel.", "evidence": "Ocorrência sintética para avaliação controlada; não representa incidente real.", "tags": ["fechamento", "carga", "parcial", "valores", "menores"]}], "queries": [{"id": "Q01", "text": "fechamento com valores menores carga parcial", "asset": "boardReport", "relevant": ["S01", "S02", "S04"]}, {"id": "Q02", "text": "cadastro clientes atraso segmento", "asset": "salesReport", "relevant": ["S05", "S06"]}, {"id": "Q03", "text": "margem custo duplicado", "asset": "marginReport", "relevant": ["S09"]}, {"id": "Q04", "text": "volume arquivo fornecedor incompleto", "asset": "deliveryReport", "relevant": ["S14"]}, {"id": "Q05", "text": "prazo entregas atraso", "asset": "deliveryReport", "relevant": ["S13", "S23"]}, {"id": "Q06", "text": "receita junção clientes", "asset": "salesReport", "relevant": ["S08"]}, {"id": "Q07", "text": "fechamento partição competência", "asset": "boardReport", "relevant": ["S17"]}, {"id": "Q08", "text": "painel dados antigos atualização", "asset": "boardReport", "relevant": ["S19", "S18"]}]};
+
+
+
+function initializeLab(graph){
+ const byId=id=>document.getElementById(id),select=byId('lab-query'),output=byId('lab-results');if(!select)return;
+ for(const q of retrievalDataset.queries){const option=document.createElement('option');option.value=q.id;option.textContent=q.text;select.append(option);}
+ function compare(){const q=retrievalDataset.queries.find(q=>q.id===select.value);output.replaceChildren();
+  for(const [label,context]of [['Busca por palavras',false],['Palavras + grafo',true]]){const column=document.createElement('div');const title=document.createElement('h3');title.textContent=label;column.append(title);const items=retrieveLexical(retrievalDataset.incidents,q.text,graph,q.asset,context).slice(0,3);
+   for(const i of items){const article=document.createElement('article');article.className='lab-result';const h=document.createElement('strong');h.textContent=i.id+' · '+i.title;const tag=document.createElement('small');tag.textContent=(q.relevant.includes(i.id)?'Relevante no gabarito sintético':'Fora do gabarito sintético')+(context?(i.connected?' · Conectado ao ativo':' · Sem conexão direta na investigação'):'');const p=document.createElement('p');p.textContent='Passo registrado: '+i.resolution;article.append(h,tag,p);column.append(article);}if(!items.length)column.append('Nenhuma correspondência.');output.append(column);}
+  byId('lab-context').textContent='Ativo investigado: '+(graph.nodes.find(n=>n.id===q.asset)?.label||q.asset)+'. Gabarito manual; não representa avaliação em produção.';
+ }
+ select.onchange=compare;compare();
+ Promise.resolve({ok:true,json:async()=>({
+  "dataset": "synthetic-v1",
+  "datasetHash": "305ad83e121034ce17a0afddbc84d45bd87ce0a0ad2229cd1792e14655a4e635",
+  "synthetic": true,
+  "incidents": 24,
+  "queries": 8,
+  "k": 3,
+  "generatedAt": "2026-11-05T14:26:27.214Z",
+  "environment": {
+    "node": "v24.22.1",
+    "platform": "linux"
+  },
+  "methodology": "Single warm-process pass. Ranking CPU only: excludes embedding generation, network, database, training and UI. No production speed or accuracy claim.",
+  "semanticStatus": "not_evaluated_no_embeddings",
+  "embeddingModel": null,
+  "vectorSource": null,
+  "providerUsage": null,
+  "embeddingMs": null,
+  "results": [
+    {
+      "method": "lexical",
+      "recallAt3": 0.8541666666666666,
+      "precisionAt3": 0.4166666666666667,
+      "ndcgAt3": 0.8752683384920503,
+      "rankingP50Ms": 0.21850999999999487,
+      "rankingP95Ms": 0.9882460000000037,
+      "details": [
+        {
+          "query": "Q01",
+          "top": [
+            "S01",
+            "S24",
+            "S17"
+          ],
+          "recall": 0.3333333333333333,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.46927872602275644,
+          "rankingMs": 0.5882199999999926
+        },
+        {
+          "query": "Q02",
+          "top": [
+            "S05",
+            "S06",
+            "S07"
+          ],
+          "recall": 1,
+          "precision": 0.6666666666666666,
+          "ndcg": 1,
+          "rankingMs": 0.21850999999999487
+        },
+        {
+          "query": "Q03",
+          "top": [
+            "S09",
+            "S10",
+            "S12"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.17834999999999468
+        },
+        {
+          "query": "Q04",
+          "top": [
+            "S14",
+            "S02",
+            "S13"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.9882460000000037
+        },
+        {
+          "query": "Q05",
+          "top": [
+            "S13",
+            "S16",
+            "S23"
+          ],
+          "recall": 1,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.9197207891481876,
+          "rankingMs": 0.11726700000001244
+        },
+        {
+          "query": "Q06",
+          "top": [
+            "S08",
+            "S03",
+            "S05"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.43778199999999856
+        },
+        {
+          "query": "Q07",
+          "top": [
+            "S17",
+            "S01",
+            "S04"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.11915000000000475
+        },
+        {
+          "query": "Q08",
+          "top": [
+            "S18",
+            "S05",
+            "S13"
+          ],
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.6131471927654584,
+          "rankingMs": 0.1642790000000076
+        }
+      ]
+    },
+    {
+      "method": "lexical_graph",
+      "recallAt3": 0.9583333333333333,
+      "precisionAt3": 0.5,
+      "ndcgAt3": 0.9429199584163137,
+      "rankingP50Ms": 0.253263000000004,
+      "rankingP95Ms": 8.059346000000005,
+      "details": [
+        {
+          "query": "Q01",
+          "top": [
+            "S01",
+            "S17",
+            "S04"
+          ],
+          "recall": 0.6666666666666666,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.7039180890341347,
+          "rankingMs": 8.059346000000005
+        },
+        {
+          "query": "Q02",
+          "top": [
+            "S05",
+            "S06",
+            "S07"
+          ],
+          "recall": 1,
+          "precision": 0.6666666666666666,
+          "ndcg": 1,
+          "rankingMs": 0.40018600000000504
+        },
+        {
+          "query": "Q03",
+          "top": [
+            "S09",
+            "S10",
+            "S12"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.18367800000000045
+        },
+        {
+          "query": "Q04",
+          "top": [
+            "S14",
+            "S13",
+            "S15"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.1892660000000035
+        },
+        {
+          "query": "Q05",
+          "top": [
+            "S13",
+            "S16",
+            "S23"
+          ],
+          "recall": 1,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.9197207891481876,
+          "rankingMs": 0.7257390000000044
+        },
+        {
+          "query": "Q06",
+          "top": [
+            "S08",
+            "S03",
+            "S05"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.1469419999999957
+        },
+        {
+          "query": "Q07",
+          "top": [
+            "S17",
+            "S01",
+            "S04"
+          ],
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "ndcg": 1,
+          "rankingMs": 0.253263000000004
+        },
+        {
+          "query": "Q08",
+          "top": [
+            "S18",
+            "S05",
+            "S19"
+          ],
+          "recall": 1,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.9197207891481876,
+          "rankingMs": 0.1579190000000068
+        }
+      ]
+    }
+  ]
+})}).then(r=>{if(!r.ok)throw Error();return r.json();}).then(report=>{
+  const box=byId('benchmark-results');box.replaceChildren();const table=document.createElement('table');const head=document.createElement('thead');head.innerHTML='<tr><th>Método</th><th>Recall@3</th><th>NDCG@3</th></tr>';table.append(head);const body=document.createElement('tbody');
+  for(const r of report.results||[]){const row=document.createElement('tr');for(const value of [r.method,(r.recallAt3*100).toFixed(1)+'%',r.ndcgAt3.toFixed(3)]){const cell=document.createElement('td');cell.textContent=value;row.append(cell);}body.append(row);}table.append(body);box.append(table);byId('semantic-status').textContent=report.semanticStatus==='evaluated'?'Embeddings e quantização residual avaliados; consulte as condições e os resultados completos no relatório.':'Embeddings e Semantic IDs: não avaliados nesta execução. Configure o provedor e execute npm run evaluate -- --embed.';
+ }).catch(()=>{byId('semantic-status').textContent='Relatório numérico indisponível. A comparação interativa por palavras continua disponível.';});
+}
+
+
 const $=id=>document.getElementById(id), NS='http://www.w3.org/2000/svg';
 let graph, selected='rawSales', direction='downstream', simulating=false, zoom=1, pan={x:0,y:0}, drag;
 const labels={source:'Fonte',job:'Processo',table:'Tabela',report:'Relatório'};
@@ -499,4 +761,25 @@ function showIssues(){
  if(!items.length){const p=document.createElement('p');p.className='note';p.textContent='Ausência de alerta não comprova qualidade: configure minRows ou maxAgeMinutes e colete métricas. Atualize a página após cada nova coleta.';box.append(p);return;}
  for(const issue of items){const article=document.createElement('article');article.className='issue';const title=document.createElement('strong');title.textContent=name(issue.asset);const desc=document.createElement('p');desc.textContent=issue.detail;const note=document.createElement('small');note.textContent=`${issue.affected.length} consumidores e ${issue.reports.length} relatórios potencialmente afetados. Coleta: ${issue.observedAt||'não informada'}`;const button=document.createElement('button');button.className='quiet';button.textContent='Rastrear dependências →';button.onclick=()=>{direction='downstream';$('direction').value=direction;select(issue.asset);document.querySelector('.workspace').scrollIntoView({behavior:'smooth'});};article.append(title,desc,note,button);box.append(article);}
 }
+
+let playbackHistory=[];
+function showRunHistory(runs){const box=$('run-history');if(!box)return;box.replaceChildren();for(const run of [...runs].reverse().slice(0,6)){const item=document.createElement('div');item.className='run-entry';item.textContent=new Date(run.at).toLocaleString('pt-BR')+' · '+(run.phase||'Execução')+' · '+run.issues.length+' alertas · '+run.resolved.length+' resolvidos';box.append(item);}}
+function initializePlayback(){
+ if(graph.mode!=='demo'){
+  $('playback').querySelector('h2').textContent='Histórico de verificações';$('playback').querySelector('.note').textContent='Execuções registradas pelo comando administrativo npm run monitor. Atualize a página após a coleta.';$('playback').querySelector('.playback-actions').hidden=true;
+  get('/api/history').then(data=>showRunHistory(data.runs||[])).catch(e=>error(e.message));return;
+ }
+ try{playbackHistory=JSON.parse(localStorage.getItem('dataimpact-demo-runs')||'[]');if(!Array.isArray(playbackHistory))playbackHistory=[];playbackHistory=playbackHistory.filter(r=>r&&typeof r.at==='string'&&Array.isArray(r.issues)&&Array.isArray(r.resolved)).slice(-30);}catch{playbackHistory=[];}
+ showRunHistory(playbackHistory);
+ document.querySelectorAll('[data-phase]').forEach(button=>button.onclick=async()=>{
+  const now=new Date(),phase=button.dataset.phase;const broken=phase==='failure';
+  graph.nodes=graph.nodes.map(n=>n.id==='rawSales'?{...n,rowCount:broken?40:120,minRows:100,observedAt:now.toISOString(),updatedAt:new Date(now-(broken?120:5)*60000).toISOString(),maxAgeMinutes:60}:n);
+  const {detectIssues:checkSnapshot}=await Promise.resolve({detectIssues});graph.issues=checkSnapshot(graph,now);
+  const previous=new Set(playbackHistory.at(-1)?.issues.map(i=>i.id)||[]),current=new Set(graph.issues.map(i=>i.id));
+  playbackHistory.push({at:now.toISOString(),phase,issues:graph.issues.map(i=>({id:i.id,asset:i.asset,rule:i.rule})),resolved:[...previous].filter(id=>!current.has(id))});playbackHistory=playbackHistory.slice(-30);
+  try{localStorage.setItem('dataimpact-demo-runs',JSON.stringify(playbackHistory));}catch{}
+  direction='downstream';$('direction').value=direction;select('rawSales');showIssues();showRunHistory(playbackHistory);
+ });
+}
+if(graph){initializePlayback();if(graph.mode==='demo')Promise.resolve({initializeLab}).then(m=>m.initializeLab(graph)).catch(()=>{$('semantic-status').textContent='Laboratório indisponível neste ambiente.';});else $('retrieval-lab').hidden=true;}
 </script></body></html>
